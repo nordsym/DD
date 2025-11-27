@@ -1427,35 +1427,42 @@
                         <!-- MARKER: Aigues Mortes (Bottom Left Island) -->
                         <div class="map-marker" style="top: 70%; left: 15%;">
                             <span class="marker-x">X</span>
-                            <span class="marker-label">Aigues Mortes</span>
+                            <span class="marker-label">Aigues Mortes<br><span style="font-size: 0.8em; font-weight: normal; opacity: 0.9;">(Tavernan Ankaret)</span></span>
                         </div>
 
                         <!-- MARKER: Oursinne (Central West Island) -->
                         <div class="map-marker" style="top: 48%; left: 32%;">
                             <span class="marker-x">X</span>
-        <!-- Session Notes Widget -->
-        <div class="session-notes-widget">
-            <button class="session-btn" onclick="toggleSessionNotes()"><i class="fas fa-pen"></i></button>
-            <div id="session-notes-panel">
-                <h4 style="font-family: 'Cinzel'; margin-top: 0; border-bottom: 1px solid #5c3d2e;">Snabba Anteckningar</h4>
-                <textarea id="quick-notes" placeholder="Skriv ner något snabbt..."></textarea>
-                <button onclick="toggleSessionNotes()" style="margin-top: 10px; background: var(--accent-gold); border: none; padding: 5px 10px; cursor: pointer; font-family: 'Cinzel'; width: 100%;">Stäng</button>
+                            <span class="marker-label">Oursinne</span>
+                        </div>
+                        
+                        <!-- REMOVED INCORRECT ANCHOR MARKER -->
+                    </div>
+                </div>
             </div>
-        </div>
+            
+            <div class="page-controls">
+                <button class="page-btn" onclick="showSection('notes')"><i class="fas fa-chevron-left"></i> Föregående</button>
+                <span class="page-num">— X —</span>
+                <button class="page-btn disabled">Slut på boken</button>
+            </div>
+        </section>
 
-        <!-- Custom Delete Modal -->
-        <div id="delete-modal" class="modal-overlay">
-            <div class="modal-box">
-                <div class="modal-title"><i class="fas fa-fire-alt"></i> Bränna Upp?</div>
-                <p style="font-family: 'EB Garamond'; font-size: 1.2rem; margin-bottom: 20px;">
-                    Är du säker på att du vill radera denna anteckning för alltid?
-                </p>
-                <button class="modal-btn btn-cancel" onclick="closeDeleteModal()">Behåll</button>
-                <button class="modal-btn btn-confirm" onclick="confirmDeleteNote()">Radera</button>
-            </div>
-        </div>
+        </div> <!-- End of Scroll Content -->
 
     </main>
+
+    <!-- Custom Delete Modal (Moved outside Main) -->
+    <div id="delete-modal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-title"><i class="fas fa-fire-alt"></i> Bränna Upp?</div>
+            <p style="font-family: 'EB Garamond'; font-size: 1.2rem; margin-bottom: 20px;">
+                Är du säker på att du vill radera denna anteckning för alltid?
+            </p>
+            <button class="modal-btn btn-cancel" onclick="closeDeleteModal()">Behåll</button>
+            <button class="modal-btn btn-confirm" onclick="confirmDeleteNote()">Radera</button>
+        </div>
+    </div>
 
     <script>
         // Toggle Dark Mode
