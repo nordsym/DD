@@ -1220,7 +1220,7 @@
                             <li><i class="fas fa-tshirt"></i> Rostig Ringbrynja</li>
                             <li><i class="fas fa-shield-alt"></i> Bucklig Sköld</li>
                             <li><i class="fas fa-khanda"></i> Långsvärd (Zügwern)</li>
-                            <li><i class="fas fa-wine-bottle"></i> Tom Vinflaska</li>
+                            <li><i class="fas fa-link"></i> Siegerkette (Helig Symbol)</li>
                         </ul>
                         <p style="font-family: 'Caveat', cursive; font-size: 1.1rem; color: var(--ink-blue); text-align: center; margin-top: 10px;">"Res lätt. Äg bara det du kan blöda för."</p>
                     </div>
@@ -1276,21 +1276,7 @@
                     <span class="handwritten-caption">Zügwernskt hantverk. Känns som hemma. Men mässingen kommer också rosta här...</span>
                 </div>
 
-                <!-- Lost Weapon (Memory) -->
-                <div class="info-card" style="background: rgba(139,69,19,0.08); border-left: 4px solid #8b4513;">
-                    <h3>Minne: Det Första Svärdet Jag Förtjänade</h3>
-                    <p style="font-style: italic; text-align: center; margin-bottom: 15px;">Turneringspris efter första segern. Såldes i vecka 2 för 15 silvermynt.</p>
-                    <div class="sketch-container">
-                        <div class="wax-seal"></div>
-                        <!-- REMOVED INLINE MIX-BLEND-MODE & FILTER -->
-                        <img data-src="https://raw.githubusercontent.com/GusHem/NordSym-Logga/refs/heads/main/tunresva%CC%88rd.svg"
-                             alt="Tournament Prize Sword"
-                             style="width: 100%; height: auto;">
-                    </div>
-                    <span class="handwritten-caption" style="color: #8b4513;">
-                        Detta är minnet av svärdet. Inte själva svärdet. Det är sålt. Det var gammalt och slitet ändå. Värdet låg i minnet av första segern, inte i stålet.
-                    </span>
-                </div>
+                <!-- REMOVED: Lost Weapon (Moved to Quest Log) -->
 
                 <div class="page-controls">
                     <button class="page-btn" onclick="showSection('char')"><i class="fas fa-chevron-left"></i> Föregående</button>
@@ -1465,38 +1451,49 @@
                                 
                                 <!-- Tradition Explanation -->
                                 <div class="info-card">
-                                    <h3 style="text-align: center;"><i class="fas fa-trophy"></i> Weinberg-Fehde Tradition</h3>
+                                    <h3 style="text-align: center;"><i class="fas fa-trophy"></i> Weinberg-Fehde (Vingårdsfejden)</h3>
                                     <p style="font-family: 'EB Garamond', serif; font-size: 1.1rem; line-height: 1.7;">
-                                        I Zügwern får varje Weinberg-Fehde-champion en silverlänk efter segern. 
-                                        Vinnaren lindar sina länkar runt sitt svärdgrepp som synlig räknare av triumfer.
+                                        <strong>Siegerkette</strong> (Zügwernska för <em>"Segrarkedjan"</em>) är inte ett smycke, utan en trofé. För varje seger i <strong>Weinberg-Fehde</strong> <em>(Vingårdsfejden)</em> vinner man en silverlänk formad som en vinranka.
+                                    </p>
+                                    <p style="font-family: 'EB Garamond', serif; font-size: 1rem; margin-top: 10px;">
+                                        Dessa länkar smids fast runt segrarens svärdsfäste. Tre segrar gav mig tre ringar – en början på en ranka som nu spricker i den tropiska hettan.
                                     </p>
                                     
-                                    <p style="font-family: 'Cinzel', serif; font-weight: 600; margin: 15px 0 8px 0;">Eisenwald Arvegods:</p>
-                                    <p style="font-family: 'EB Garamond', serif; font-size: 0.95rem;">
-                                        Silvermedaljongen (family heirloom) visar <em>vinranka omsluten runt svärd</em> - 
-                                        Zügwerns gamla symbol för "styrka genom odling". 
-                                        Grapevine = cultivation, patience, growth. Sword = martial strength, protection.
-                                    </p>
-
                                     <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin: 25px 0; text-align: center;">
                                         <div style="border: 2px solid var(--accent-gold); padding: 15px;">
                                             <div style="font-family: 'Cinzel', serif; font-size: 1.5rem; color: var(--accent-gold);">1520</div>
-                                            <div style="font-size: 0.95rem; margin-top: 5px;">Första segern</div>
+                                            <div style="font-size: 0.95rem; margin-top: 5px;">Första Ringen</div>
                                         </div>
                                         <div style="border: 2px solid var(--accent-gold); padding: 15px;">
                                             <div style="font-family: 'Cinzel', serif; font-size: 1.5rem; color: var(--accent-gold);">1521</div>
-                                            <div style="font-size: 0.95rem; margin-top: 5px;">Försvar av titeln</div>
+                                            <div style="font-size: 0.95rem; margin-top: 5px;">Andra Ringen</div>
                                         </div>
                                         <div style="border: 2px solid var(--accent-gold); padding: 15px;">
                                             <div style="font-family: 'Cinzel', serif; font-size: 1.5rem; color: var(--accent-gold);">1523</div>
-                                            <div style="font-size: 0.95rem; margin-top: 5px;">Tredje kronan</div>
+                                            <div style="font-size: 0.95rem; margin-top: 5px;">Tredje Ringen</div>
                                         </div>
                                     </div>
+                                </div>
+
+                                <!-- MOVED HERE: Lost Weapon (Memory) -->
+                                <div class="info-card" style="background: rgba(139,69,19,0.08); border-left: 4px solid #8b4513;">
+                                    <h3>Minne: Det Första Svärdet</h3>
+                                    <p style="font-style: italic; text-align: center; margin-bottom: 15px;">Turneringspris vunnet tillsammans med första ringen 1520.</p>
+                                    <div class="sketch-container">
+                                        <div class="wax-seal"></div>
+                                        <!-- REMOVED INLINE MIX-BLEND-MODE & FILTER -->
+                                        <img data-src="https://raw.githubusercontent.com/GusHem/NordSym-Logga/refs/heads/main/tunresva%CC%88rd.svg"
+                                             alt="Tournament Prize Sword"
+                                             style="width: 100%; height: auto;">
+                                    </div>
+                                    <span class="handwritten-caption" style="color: #8b4513;">
+                                        Detta är minnet av svärdet. Inte själva svärdet. Det är sålt. Det var gammalt och slitet ändå. Värdet låg i minnet av första segern, inte i stålet.
+                                    </span>
                                 </div>
                                 
                                 <!-- Medallion Image -->
                                 <div class="info-card" style="background: rgba(139,90,43,0.05); border: 2px solid var(--accent-gold);">
-                                    <h3 style="text-align: center;"><i class="fas fa-book-open"></i> Symbolik & Koppling</h3>
+                                    <h3 style="text-align: center;"><i class="fas fa-book-open"></i> Eisenwald Arvegods</h3>
                                     <div class="sketch-container">
                                         <div class="wax-seal"></div>
                                         <!-- REMOVED INLINE MIX-BLEND-MODE & FILTER -->
@@ -1506,7 +1503,7 @@
                                     </div>
                                     <p style="font-family: 'Caveat', cursive; font-size: 1.2rem; color: var(--ink-color);
                                               margin-top: 15px; text-align: center; font-weight: 700;">
-                                        "Sista kopplingen till familjen. Silvret håller bättre än länkarna, men hur länge?"
+                                        "Sista kopplingen till familjen. Detta halsband tog jag med hemifrån. Silvret i det håller bättre än länkarna på svärdet, men hur länge?"
                                     </p>
                                 </div>
 
@@ -1518,7 +1515,7 @@
                                     <div class="sketch-container">
                                         <div class="wax-seal"></div>
                                         <!-- REMOVED INLINE MIX-BLEND-MODE & FILTER -->
-                                        <img data-src="https://raw.githubusercontent.com/GusHem/NordSym-Logga/refs/heads/main/mittenla%CC%88nk.svg"
+                                        <img data-src="https://raw.githubusercontent.com/GusHem/NordSym-Logga/refs/heads/main/rostig-ring.svg"
                                              alt="Siegerkette Close-up"
                                              style="width: 100%; height: auto;">
                                     </div>
@@ -1529,11 +1526,11 @@
 
                                 <!-- Degradation Diagram -->
                                 <div class="info-card">
-                                    <h3 style="text-align: center;"><i class="fas fa-exclamation-triangle"></i> Tillstånd Efter 3 Månader</h3>
+                                    <h3 style="text-align: center;"><i class="fas fa-exclamation-triangle"></i> Tillstånd Efter 3 Veckor</h3>
                                     <div class="sketch-container">
                                         <div class="wax-seal"></div>
                                         <!-- REMOVED INLINE MIX-BLEND-MODE & FILTER -->
-                                        <img data-src="https://raw.githubusercontent.com/GusHem/NordSym-Logga/refs/heads/main/vinranke-ritning.svg"
+                                        <img data-src="https://raw.githubusercontent.com/GusHem/NordSym-Logga/refs/heads/main/silver-armband-skiss.svg"
                                              alt="Degradation Diagram"
                                              style="width: 100%; height: auto;">
                                     </div>
@@ -1544,13 +1541,10 @@
                                 <div class="info-card" style="background: rgba(139,69,19,0.08); border-left: 4px solid #8b4513;">
                                     <h3 style="text-align: center;"><i class="fas fa-book"></i> Om Zügwerns Symboler</h3>
                                     <p style="font-family: 'EB Garamond', serif; font-size: 1rem; line-height: 1.7;">
-                                        <strong>Vinrankan och Svärdet</strong> är Zügwerns äldsta symbol - 
-                                        odlat av wine-growing warrior families sedan före Gudafallet. 
-                                        Representerar balans: patience (vines grow slowly) och decisive action (sword strikes fast).
+                                        <strong>Vinrankan och Svärdet</strong> representerar Zügwerns två stoltheter. Symbolen förenar odlarens <strong>tålamod</strong> <em>(rankan)</em> med krigarens <strong>beslutsamhet</strong> <em>(svärdet)</em>. Det är en påminnelse om att riket vilar på både jordbruk och stål.
                                     </p>
                                     <p style="font-family: 'Caveat', cursive; font-size: 1.2rem; color: var(--ink-color); margin-top: 10px;">
-                                        "Gudarna dog för 100 år sedan. Men traditionerna lever. 
-                                        Min ed behöver ingen gud - bara min vilja och stål."
+                                        "Gudarna dog för 100 år sedan. Men traditionerna lever. Min ed behöver ingen gud – bara min vilja och mitt stål."
                                     </p>
                                 </div>
                                 
