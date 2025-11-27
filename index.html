@@ -1393,7 +1393,12 @@
                     </div>
                 </div>
 
-                <div class="page-controls"><button class="page-btn" onclick="showSection('armor')"><i class="fas fa-chevron-left"></i> Föregående</button><span class="page-num">— III —</span><button class="page-btn" onclick="showSection('world')">Nästa Sida <i class="fas fa-chevron-right"></i></button></div>
+                <!-- UPDATED FOOTER NAVIGATION FOR JOURNAL -->
+                <div class="page-controls">
+                    <button class="page-btn" onclick="handleJournalPrev()"><i class="fas fa-chevron-left"></i> Föregående</button>
+                    <span class="page-num">— III —</span>
+                    <button class="page-btn" onclick="handleJournalNext()">Nästa Sida <i class="fas fa-chevron-right"></i></button>
+                </div>
             </section>
 
             <!-- SECTION 3: WORLD CODEX -->
@@ -2144,9 +2149,38 @@
 
             document.getElementById('journal-page-' + targetPage).classList.add('active');
             
-            const romanNums = ["I", "II", "III", "IV", "V", "VI"];
-            document.getElementById('journal-page-indicator').innerText = "Blad " + romanNums[targetPage-1];
+            // UPDATED: Descriptive titles instead of "Blad I"
+            const pageTitles = [
+                "Weinberg-arenan",
+                "Safehouse",
+                "Pålhuset",
+                "Vecka 1: Förlusten",
+                "Råttkungen",
+                "Första Segern"
+            ];
+            
+            // Fallback if array length doesn't match pages, though it should
+            const titleText = pageTitles[targetPage-1] || ("Blad " + targetPage);
+            
+            document.getElementById('journal-page-indicator').innerText = titleText;
             currentJournalPage = targetPage;
+        }
+
+        // NEW: Smart Navigation for Journal Footer
+        function handleJournalNext() {
+            if (currentJournalPage < totalJournalPages) {
+                switchJournalPage(1);
+            } else {
+                showSection('world');
+            }
+        }
+
+        function handleJournalPrev() {
+            if (currentJournalPage > 1) {
+                switchJournalPage(-1);
+            } else {
+                showSection('armor');
+            }
         }
 
         // Spell Slot Toggle
