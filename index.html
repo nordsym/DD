@@ -77,9 +77,10 @@
             color: var(--text-main);
             margin: 0;
             padding: 0;
-            height: 100vh;
+            height: 100vh; /* Fallback */
+            height: 100dvh; /* Dynamic Viewport Height for mobile browsers */
             display: flex;
-            overflow: hidden;
+            overflow: hidden; /* Lock body scroll globally */
             transition: background-color 0.5s ease;
         }
 
@@ -824,15 +825,73 @@
             .journal-grid, .spell-grid { column-count: 1; display: block; }
             .journal-grid > .info-card, .spell-grid > .spell-card { break-inside: avoid; margin-bottom: 30px; }
         }
+        
+        /* IPAD / MOBILE OPTIMIZATION */
         @media (max-width: 768px) {
-            body { flex-direction: column; overflow: auto; }
-            .sidebar { width: 100%; height: auto; overflow-x: auto; flex-direction: row; padding: 10px; border-right: none; border-bottom: 6px solid var(--accent-gold); }
+            body { 
+                flex-direction: column; 
+                overflow: hidden; /* Keep locked */
+            }
+            
+            .sidebar { 
+                width: 100%; 
+                height: auto; 
+                min-height: 60px; /* Touch friendly height */
+                flex-shrink: 0; /* Don't shrink */
+                overflow-x: auto; /* Horizontal scroll for icons */
+                overflow-y: hidden;
+                flex-direction: row; 
+                padding: 10px; 
+                border-right: none; 
+                border-bottom: 6px solid var(--accent-gold); 
+                white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
+            }
+            
             .book-title { display: none; }
-            .nav-btn { padding: 10px 15px; font-size: 0.9rem; white-space: nowrap; margin: 0 2px; width: auto; }
+            
+            .nav-btn { 
+                padding: 10px 15px; 
+                font-size: 0.9rem; 
+                white-space: nowrap; 
+                margin: 0 2px; 
+                width: auto;
+                display: inline-flex; /* Fix grid override */
+                align-items: center;
+                gap: 8px;
+            }
+            
             .nav-btn::before { display: none; }
-            .content-area { padding: 20px; overflow-y: auto; scrollbar-width: auto; margin: 0; border-radius: 0; box-shadow: none; border: none; }
+            
+            /* Reset Active State padding for horizontal layout */
+            .nav-btn.active-btn {
+                padding-left: 15px;
+                border-left: none;
+                border-bottom: 3px solid var(--accent-gold);
+                background: rgba(255,255,255,0.1);
+            }
+            
+            .content-area { 
+                flex: 1; /* Take all remaining height */
+                width: 100%;
+                margin: 0; 
+                border: none;
+                border-radius: 0; 
+                box-shadow: none; 
+                overflow: hidden; /* Let scroll-content handle scroll */
+            }
+            
+            .scroll-content {
+                padding: 20px 15px 80px 15px; /* Extra bottom padding for thumbs */
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            
             .journal-grid, .character-registry, .spell-grid { grid-template-columns: 1fr; }
             .brass-corner-tl, .brass-corner-tr { width: 30px; height: 30px; }
+            
+            /* Adjust modals for mobile */
+            .modal-box { width: 95%; padding: 20px; }
         }
         
         @media print {
@@ -1811,7 +1870,7 @@
                         <h4 style="font-family: 'Cinzel'; color: var(--text-sub); margin-bottom: 10px;">Regioner & Riken</h4>
                         <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; font-size: 0.95rem;">
                             <div><i class="fas fa-home" style="color:var(--theme-quest)"></i> <strong>Zügwern</strong><br><span style="font-size:0.8em; opacity:0.8;">Hemland (Huvudstad: Wesshopp)</span></div>
-                            <div><i class="fas fa-map-marked-alt" style="color:var(--theme-quest)"></i> <strong>Lisse</strong><br><span style="font-size:0.8em; opacity:0.8;">Handelsimperiet. Ingen huvudstad – styrs av kompanier.</span></div>
+                            <div><i class="fas fa-map-marked-alt" style="color:var(--theme-quest)"></i> <strong>Lisse</strong><br><span style="font-size:0.8em; opacity:0.8;">Handelsimperiet. Ingen huvudstad – styrs av olika handelshus.</span></div>
                             <div><i class="fas fa-snowflake" style="color:#888;"></i> <strong>Midvitnir</strong><br><span style="font-size:0.8em; opacity:0.8;">Isriket i Norr</span></div>
                         </div>
                     </div>
