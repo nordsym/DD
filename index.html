@@ -130,7 +130,7 @@
             border: 2px solid var(--accent-gold);
             border-left: none; border-right: none;
             padding: 20px 10px;
-            margin: 0 15px 40px 15px;
+            margin: 0 20px 40px 20px;
             background: linear-gradient(to right, transparent, rgba(255,255,255,0.05), transparent);
             cursor: pointer;
             transition: all 0.3s;
@@ -150,13 +150,21 @@
             font-family: 'Cinzel', serif;
             font-size: 0.95rem;
             letter-spacing: 1px;
+            
+            /* UPDATED: Inset spacing and Grid layout */
+            padding: 15px 20px 15px 45px;
+            margin: 5px 15px;
+            width: auto;
+            
+            display: grid;
+            grid-template-columns: 35px 1fr;
+            align-items: center;
+            gap: 10px;
             text-align: left;
-            padding: 15px 25px 15px 50px;
-            margin: 5px 0;
+            
             cursor: pointer;
             transition: all 0.3s ease;
             position: relative;
-            width: 100%;
             text-shadow: 0 1px 2px rgba(0,0,0,0.8);
             z-index: 2;
         }
@@ -168,19 +176,21 @@
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05));
         }
 
-        .nav-icon { width: 20px; display: inline-block; text-align: center; margin-right: 10px; color: inherit; }
+        .nav-icon { 
+            width: auto; 
+            display: inline-block; 
+            text-align: center; 
+            justify-self: center;
+            margin-right: 0; 
+            color: inherit; 
+        }
 
         .nav-btn.active-btn {
             color: #fff;
             background: linear-gradient(90deg, rgba(255,255,255,0.1), transparent);
             border-left: 4px solid var(--accent-gold);
             text-shadow: 0 0 8px var(--accent-gold);
-        }
-        
-        body.dark-mode .nav-btn.active-btn {
-            color: var(--ink-color);
-            text-shadow: 0 0 10px var(--ink-color);
-            border-left-color: var(--ink-color);
+            padding-left: 41px; /* Compensate for 4px border */
         }
 
         .nav-btn::before {
@@ -695,35 +705,35 @@
                         </div>
                     </header>
                     <div class="stat-grid">
-                        <div class="stat-box"><span class="stat-val">19</span><span class="stat-label">RK</span></div>
-                        <div class="stat-box"><span class="stat-val">21</span><span class="stat-label">KP</span><p style="font-family: 'Caveat', cursive; font-size: 1rem; font-weight: 700; color: var(--ink-blue); margin-top: 5px; position: absolute; top: -15px; right: -10px; transform: rotate(10deg);">(Inte nog...)</p></div>
+                        <div class="stat-box"><span class="stat-val">19</span><span class="stat-label">AC</span></div>
+                        <div class="stat-box"><span class="stat-val">21</span><span class="stat-label">HP</span></div>
                         <div class="stat-box"><span class="stat-val">+0</span><span class="stat-label">INIT</span></div>
-                        <div class="stat-box"><span class="stat-val">30</span><span class="stat-label">HAST</span></div>
+                        <div class="stat-box"><span class="stat-val">30</span><span class="stat-label">SPEED</span></div>
                         <div class="stat-box" style="border-color: var(--theme-char);"><span class="stat-val">12</span><span class="stat-label">DC</span></div>
                     </div>
                     <div class="info-card">
-                        <h3>Egenskapsvärden</h3>
-                        <table><thead><tr><th>Egenskap</th><th>Värde</th><th>Mod</th><th>Save</th></tr></thead><tbody><tr><td>STR</td><td>17</td><td>+3</td><td>+5 (Prof)</td></tr><tr><td>DEX</td><td>10</td><td>+0</td><td>+0</td></tr><tr><td>CON</td><td>14</td><td>+2</td><td>+2</td></tr><tr><td>INT</td><td>10</td><td>+0</td><td>+0</td></tr><tr><td>WIS</td><td>8</td><td>-1</td><td>-1</td></tr><tr><td>CHA</td><td>14</td><td>+2</td><td>+4 (Prof)</td></tr></tbody></table>
+                        <h3>Ability Scores</h3>
+                        <table><thead><tr><th>Ability</th><th>Score</th><th>Mod</th><th>Save</th></tr></thead><tbody><tr><td>STR</td><td>17</td><td>+3</td><td>+5 (Prof)</td></tr><tr><td>DEX</td><td>10</td><td>+0</td><td>+0</td></tr><tr><td>CON</td><td>14</td><td>+2</td><td>+2</td></tr><tr><td>INT</td><td>10</td><td>+0</td><td>+0</td></tr><tr><td>WIS</td><td>8</td><td>-1</td><td>-1</td></tr><tr><td>CHA</td><td>14</td><td>+2</td><td>+4 (Prof)</td></tr></tbody></table>
                     </div>
 
                     <div class="info-card">
-                        <h3>Färdigheter & Träning</h3>
+                        <h3>Skills & Training</h3>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; font-size: 0.95rem; margin-bottom: 15px;">
                             <div>
-                                <div style="font-family: 'Cinzel', serif; font-size: 0.8rem; color: var(--text-sub); border-bottom: 1px solid rgba(0,0,0,0.1);">Stridsstil</div>
-                                <div style="margin-top: 4px;"><strong>Defense:</strong> +1 RK (tot 19)</div>
+                                <div style="font-family: 'Cinzel', serif; font-size: 0.8rem; color: var(--text-sub); border-bottom: 1px solid rgba(0,0,0,0.1);">Fighting Style</div>
+                                <div style="margin-top: 4px;"><strong>Defense:</strong> +1 AC (tot 19)</div>
                             </div>
                             <div>
-                                <div style="font-family: 'Cinzel', serif; font-size: 0.8rem; color: var(--text-sub); border-bottom: 1px solid rgba(0,0,0,0.1);">Verktyg</div>
-                                <div style="margin-top: 4px;">Smedverktyg</div>
+                                <div style="font-family: 'Cinzel', serif; font-size: 0.8rem; color: var(--text-sub); border-bottom: 1px solid rgba(0,0,0,0.1);">Tools</div>
+                                <div style="margin-top: 4px;">Smith's Tools</div>
                             </div>
                             <div>
-                                <div style="font-family: 'Cinzel', serif; font-size: 0.8rem; color: var(--text-sub); border-bottom: 1px solid rgba(0,0,0,0.1);">Färdigheter</div>
-                                <div style="margin-top: 4px;">Atletik, Intimidation</div>
+                                <div style="font-family: 'Cinzel', serif; font-size: 0.8rem; color: var(--text-sub); border-bottom: 1px solid rgba(0,0,0,0.1);">Skills</div>
+                                <div style="margin-top: 4px;">Athletics, Intimidation</div>
                             </div>
                             <div>
-                                <div style="font-family: 'Cinzel', serif; font-size: 0.8rem; color: var(--text-sub); border-bottom: 1px solid rgba(0,0,0,0.1);">Språk</div>
-                                <div style="margin-top: 4px;">Allmänna, Drakiska</div>
+                                <div style="font-family: 'Cinzel', serif; font-size: 0.8rem; color: var(--text-sub); border-bottom: 1px solid rgba(0,0,0,0.1);">Languages</div>
+                                <div style="margin-top: 4px;">Common, Draconic</div>
                             </div>
                         </div>
 
@@ -765,8 +775,8 @@
                         <p><strong><i class="fas fa-shield-alt"></i> Draconic Resistance:</strong> Resistance to Fire damage (half damage from fire sources)</p>
                         
                         <table>
-                            <tr><th>Attack</th><th>Bonus</th><th>Skada</th><th>Noter</th></tr>
-                            <tr><td>Långsvärd</td><td>+5</td><td>1d8+3 Slash</td><td>Versatile (1d10)</td></tr>
+                            <tr><th>Attack</th><th>Bonus</th><th>Damage</th><th>Notes</th></tr>
+                            <tr><td>Longsword</td><td>+5</td><td>1d8+3 Slash</td><td>Versatile (1d10)</td></tr>
                         </table>
                     </div>
 
@@ -860,34 +870,74 @@
                 <div class="journal-nav">
                     <button onclick="switchJournalPage(-1)"><i class="fas fa-chevron-left"></i></button><span id="journal-page-indicator">Blad I</span><button onclick="switchJournalPage(1)"><i class="fas fa-chevron-right"></i></button>
                 </div>
-                <div id="journal-page-1" class="journal-page active">
-                    <div class="journal-grid">
-                        <div class="info-card"><h3>Inlägg 1: Weinberg-arenan</h3><div class="sketch-container" style="padding: 10px;"><div class="wax-seal"></div><img data-src="https://raw.githubusercontent.com/GusHem/NordSym-Logga/refs/heads/main/Arena.svg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect fill='transparent' width='100' height='100'/%3E%3C/svg%3E" alt="Arena" style="width: 100%; height: auto; mix-blend-mode: multiply;"></div><span class="handwritten-caption">Där jag förtjänade mina första ränder.</span></div>
-                        <div class="info-card"><h3>Inlägg 2: Safehouse</h3><div class="sketch-container" style="padding: 10px;"><div class="wax-seal"></div><img data-src="https://raw.githubusercontent.com/GusHem/NordSym-Logga/refs/heads/main/Hideout.svg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect fill='transparent' width='100' height='100'/%3E%3C/svg%3E" alt="Safehouse" style="width: 100%; height: auto; mix-blend-mode: multiply;"></div><span class="handwritten-caption">Där heder går för att dö. Mitt 'hov'.</span></div>
-                    </div>
-                </div>
-                <div id="journal-page-2" class="journal-page">
-                    <div class="journal-grid">
-                        <div class="info-card"><h3>Fig 2: Aigues Mortes</h3><div class="sketch-container" style="padding: 10px;"><div class="wax-seal"></div><img data-src="https://raw.githubusercontent.com/GusHem/NordSym-Logga/refs/heads/main/Hus.svg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect fill='transparent' width='100' height='100'/%3E%3C/svg%3E" alt="Pålhus" style="width: 100%; height: auto; mix-blend-mode: multiply;"></div><span class="handwritten-caption">Arkitektur av nödvändighet.</span></div>
-                        <div class="info-card">
-                            <h3>Inlägg 6: Vecka 1</h3>
-                            <div class="sketch-container" style="padding: 10px;">
-                                <div class="wax-seal"></div>
-                                <img data-src="https://raw.githubusercontent.com/GusHem/NordSym-Logga/refs/heads/main/coinbag.svg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect fill='transparent' width='100' height='100'/%3E%3C/svg%3E" alt="Tom Börs" style="width: 100%; height: auto; mix-blend-mode: multiply;">
-                            </div>
-                            <span class="handwritten-caption">Förlorade allt. För naiv.</span>
-                            <!-- ADDED JOURNAL CAPTION -->
-                            <p style="font-family: 'Caveat', cursive; font-size: 1.1rem; color: var(--ink-color); margin-top: 10px; border-top: 1px dashed rgba(0,0,0,0.2); padding-top: 5px;">
-                                "Behöll flyern. Påminnelse: Äran kostade 15sp. Inget tillbaka."
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div id="journal-page-3" class="journal-page"><div class="journal-grid"><div class="info-card"><h3>Inlägg 8: Råttkungen</h3><div class="sketch-container" style="padding: 10px;"><div class="wax-seal"></div><img data-src="https://raw.githubusercontent.com/GusHem/NordSym-Logga/refs/heads/main/ratking.svg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect fill='transparent' width='100' height='100'/%3E%3C/svg%3E" alt="Råttkungen" style="width: 100%; height: auto; mix-blend-mode: multiply;"></div><span class="handwritten-caption">Svalde stoltheten. Behövde mynt.</span></div></div></div>
                 
+                <!-- PAGE 1: Arena -->
+                <div id="journal-page-1" class="journal-page active">
+                    <div class="info-card">
+                        <h3>Inlägg 1: Weinberg-arenan</h3>
+                        <div class="sketch-container" style="padding: 10px;">
+                            <div class="wax-seal"></div>
+                            <img data-src="https://raw.githubusercontent.com/GusHem/NordSym-Logga/refs/heads/main/Arena.svg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect fill='transparent' width='100' height='100'/%3E%3C/svg%3E" alt="Arena" style="width: 100%; height: auto; mix-blend-mode: multiply;">
+                        </div>
+                        <span class="handwritten-caption">Där jag vann mina första segrar.</span>
+                    </div>
+                </div>
+
+                <!-- PAGE 2: Safehouse -->
+                <div id="journal-page-2" class="journal-page">
+                    <div class="info-card">
+                        <h3>Inlägg 2: Safehouse</h3>
+                        <div class="sketch-container" style="padding: 10px;">
+                            <div class="wax-seal"></div>
+                            <img data-src="https://raw.githubusercontent.com/GusHem/NordSym-Logga/refs/heads/main/Hideout.svg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect fill='transparent' width='100' height='100'/%3E%3C/svg%3E" alt="Safehouse" style="width: 100%; height: auto; mix-blend-mode: multiply;">
+                        </div>
+                        <span class="handwritten-caption">Inte mycket för världen, men det är torrt.</span>
+                    </div>
+                </div>
+
+                <!-- PAGE 3: Pålhus (Hus.svg) -->
+                <div id="journal-page-3" class="journal-page">
+                    <div class="info-card">
+                        <h3>Fig 3: Aigues Mortes Pålhus</h3>
+                        <div class="sketch-container" style="padding: 10px;">
+                            <div class="wax-seal"></div>
+                            <img data-src="https://raw.githubusercontent.com/GusHem/NordSym-Logga/refs/heads/main/Hus.svg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect fill='transparent' width='100' height='100'/%3E%3C/svg%3E" alt="Pålhus" style="width: 100%; height: auto; mix-blend-mode: multiply;">
+                        </div>
+                        <span class="handwritten-caption">Arkitektur av nödvändighet. Marken här bär ingenting, inte ens löften.</span>
+                    </div>
+                </div>
+
+                <!-- PAGE 4: Coinbag -->
                 <div id="journal-page-4" class="journal-page">
-                    <div class="info-card" style="grid-column: 1 / -1;">
-                        <h3>Inlägg 9: Första Segern</h3>
+                    <div class="info-card">
+                        <h3>Inlägg 4: Vecka 1</h3>
+                        <div class="sketch-container" style="padding: 10px;">
+                            <div class="wax-seal"></div>
+                            <img data-src="https://raw.githubusercontent.com/GusHem/NordSym-Logga/refs/heads/main/coinbag.svg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect fill='transparent' width='100' height='100'/%3E%3C/svg%3E" alt="Tom Börs" style="width: 100%; height: auto; mix-blend-mode: multiply;">
+                        </div>
+                        <span class="handwritten-caption">Tog en risk. Det lönade sig inte.</span>
+                        <p style="font-family: 'Caveat', cursive; font-size: 1.1rem; color: var(--ink-color); margin-top: 10px; border-top: 1px dashed rgba(0,0,0,0.2); padding-top: 5px;">
+                            "Behöll flyern. En påminnelse om vad som förde mig hit."
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- PAGE 5: Råttkungen -->
+                <div id="journal-page-5" class="journal-page">
+                    <div class="info-card">
+                        <h3>Inlägg 5: Råttkungen</h3>
+                        <div class="sketch-container" style="padding: 10px;">
+                            <div class="wax-seal"></div>
+                            <img data-src="https://raw.githubusercontent.com/GusHem/NordSym-Logga/refs/heads/main/ratking.svg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect fill='transparent' width='100' height='100'/%3E%3C/svg%3E" alt="Råttkungen" style="width: 100%; height: auto; mix-blend-mode: multiply;">
+                        </div>
+                        <span class="handwritten-caption">Arbete är arbete. Guld luktar inte.</span>
+                    </div>
+                </div>
+                
+                <!-- PAGE 6: Victory -->
+                <div id="journal-page-6" class="journal-page">
+                    <div class="info-card">
+                        <h3>Inlägg 6: Första Segern</h3>
                         <div class="sketch-container" style="padding: 10px;">
                             <div class="wax-seal"></div>
                             <img data-src="https://raw.githubusercontent.com/GusHem/NordSym-Logga/refs/heads/main/turnevinst.svg" 
@@ -895,7 +945,7 @@
                                  style="width: 100%; height: auto; mix-blend-mode: var(--image-filter); filter: var(--image-adjust);">
                         </div>
                         <span class="handwritten-caption">
-                            Innan allt förändrades. När jag fortfarande trodde att vinna betydde något.
+                            Minnet värmer när nätterna blir kalla.
                         </span>
                     </div>
                 </div>
@@ -1114,14 +1164,22 @@
                     <div class="spell-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px;">
                         <div class="spell-card info-card" style="border-left: 3px solid var(--accent-gold); background: rgba(197, 160, 89, 0.05);">
                             <h3><i class="fas fa-skull-crossbones"></i> Bane</h3>
-                            <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-sub); margin-bottom: 10px;"><span>⏱ 1 Act</span><span>📍 30 ft</span><span>⏳ Conc 1m</span></div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-sub); margin-bottom: 10px;">
+                                <span><i class="fas fa-clock"></i> 1 Act</span>
+                                <span><i class="fas fa-crosshairs"></i> 30 ft</span>
+                                <span><i class="fas fa-hourglass-half"></i> Conc 1 min</span>
+                            </div>
                             <p style="font-family: 'EB Garamond', serif;">3 creatures, -1d4 on attacks & saves. (CHA Save).</p>
                             <div style="text-align:right; font-size:0.75rem; color:var(--accent-gold); font-weight:bold; margin-top:5px;">OATH SPELL</div>
                             <div class="kurt-comment">"I arenan lärde jag mig att försvaga fienden innan första hugget."</div>
                         </div>
                         <div class="spell-card info-card" style="border-left: 3px solid var(--accent-gold); background: rgba(197, 160, 89, 0.05);">
                             <h3><i class="fas fa-fist-raised"></i> Compelled Duel</h3>
-                            <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-sub); margin-bottom: 10px;"><span>⏱ 1 BA</span><span>📍 30 ft</span><span>⏳ Conc 1m</span></div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-sub); margin-bottom: 10px;">
+                                <span><i class="fas fa-bolt"></i> 1 BA</span>
+                                <span><i class="fas fa-crosshairs"></i> 30 ft</span>
+                                <span><i class="fas fa-hourglass-half"></i> Conc 1 min</span>
+                            </div>
                             <p style="font-family: 'EB Garamond', serif;">Force 1v1 focus. Disadv attacking others. WIS Save.</p>
                             <div style="text-align:right; font-size:0.75rem; color:var(--accent-gold); font-weight:bold; margin-top:5px;">OATH SPELL</div>
                             <div class="kurt-comment">"Tvinga fokus. Som Weinberg-Fehde - bara du och din fiende."</div>
@@ -1133,19 +1191,31 @@
                     <div class="spell-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                         <div class="spell-card info-card" style="border-left: 3px solid #4a3626;">
                             <h3><i class="fas fa-hand-sparkles"></i> Bless</h3>
-                            <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-sub); margin-bottom: 10px;"><span>⏱ 1 Act</span><span>📍 30 ft</span><span>⏳ Conc 1m</span></div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-sub); margin-bottom: 10px;">
+                                <span><i class="fas fa-clock"></i> 1 Act</span>
+                                <span><i class="fas fa-crosshairs"></i> 30 ft</span>
+                                <span><i class="fas fa-hourglass-half"></i> Conc 1 min</span>
+                            </div>
                             <p style="font-family: 'EB Garamond', serif;">3 creatures: +1d4 on attacks & saves.</p>
                             <div class="kurt-comment">"Inte gudarnas välsignelse. Bara min vilja att de överlever."</div>
                         </div>
                         <div class="spell-card info-card" style="border-left: 3px solid #2c4a6b; background: linear-gradient(135deg, rgba(44, 74, 107, 0.03) 0%, transparent 100%);">
                             <h3><i class="fas fa-shield-virus"></i> Prot. Evil & Good</h3>
-                            <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-sub); margin-bottom: 10px;"><span>⏱ 1 Act</span><span>📍 Touch</span><span>⏳ Conc 10m</span></div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-sub); margin-bottom: 10px;">
+                                <span><i class="fas fa-clock"></i> 1 Act</span>
+                                <span><i class="fas fa-hand-paper"></i> Touch</span>
+                                <span><i class="fas fa-hourglass-half"></i> Conc 10 min</span>
+                            </div>
                             <p style="font-family: 'EB Garamond', serif;">Disadv to hit you (Aberration, Fiend, Undead etc). Immune Charm/Fear.</p>
                             <div class="kurt-comment">"Tro skyddar inte. Men ed och stål gör det."</div>
                         </div>
                         <div class="spell-card info-card" style="grid-column: 1 / -1; border-left: 3px solid #4a3626;">
                             <h3><i class="fas fa-heartbeat"></i> Cure Wounds</h3>
-                            <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-sub); margin-bottom: 10px;"><span>⏱ 1 Act</span><span>📍 Touch</span><span>⏳ Instant</span></div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-sub); margin-bottom: 10px;">
+                                <span><i class="fas fa-clock"></i> 1 Act</span>
+                                <span><i class="fas fa-hand-paper"></i> Touch</span>
+                                <span><i class="fas fa-check"></i> Instant</span>
+                            </div>
                             <p style="font-family: 'EB Garamond', serif;">Heal 1d8 + CHA (2). Higher slots: +1d8.</p>
                             <div class="kurt-comment">"Läkning genom beslutsamhet. Ingen gud behövs - bara vägran att falla."</div>
                         </div>
@@ -1162,22 +1232,22 @@
                     <div class="spell-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom:20px;">
                         <div class="spell-card info-card" style="padding:15px; border-left: 3px solid #8b0000; background: linear-gradient(135deg, rgba(139, 0, 0, 0.03) 0%, transparent 100%);">
                             <h3 style="font-size:1rem;"><i class="fas fa-sun"></i> Divine Favor</h3>
-                            <p style="font-size:0.8rem;"><strong>BA, Self, Conc 1m.</strong> +1d4 Radiant dmg on ALL attacks.</p>
-                            <div class="kurt-comment" style="color: #8b0000;">"Varje slag måste räknas när livet hänger på 21 KP."</div>
+                            <p style="font-size:0.8rem;"><strong>BA, Self, Conc 1 min.</strong> +1d4 Radiant dmg on ALL attacks.</p>
+                            <div class="kurt-comment" style="color: #8b0000;">"Varje slag måste räknas när livet hänger på 21 HP."</div>
                         </div>
                         <div class="spell-card info-card" style="padding:15px; border-left: 3px solid #8b0000; background: linear-gradient(135deg, rgba(139, 0, 0, 0.03) 0%, transparent 100%);">
                             <h3 style="font-size:1rem;"><i class="fas fa-fire"></i> Searing Smite</h3>
-                            <p style="font-size:0.8rem;"><strong>BA, Self, Conc 1m.</strong> Hit: +1d6 Fire + Burn (CON save).</p>
+                            <p style="font-size:0.8rem;"><strong>BA, Self, Conc 1 min.</strong> Hit: +1d6 Fire + Burn (CON save).</p>
                             <div class="kurt-comment" style="color: #8b0000;">"Mässing-eld. Påminner fienden var jag kommer ifrån."</div>
                         </div>
                         <div class="spell-card info-card" style="padding:15px; border-left: 3px solid #8b0000; background: linear-gradient(135deg, rgba(139, 0, 0, 0.03) 0%, transparent 100%);">
                             <h3 style="font-size:1rem;"><i class="fas fa-bolt"></i> Thunderous Smite</h3>
-                            <p style="font-size:0.8rem;"><strong>BA, Self, Conc 1m.</strong> Hit: +2d6 Thunder + Push 10ft (STR save).</p>
+                            <p style="font-size:0.8rem;"><strong>BA, Self, Conc 1 min.</strong> Hit: +2d6 Thunder + Push 10ft (STR save).</p>
                             <div class="kurt-comment" style="color: #8b0000;">"Kraft över finess. Arena-stil - dom ska höra slaget."</div>
                         </div>
                         <div class="spell-card info-card" style="padding:15px; border-left: 3px solid #8b0000; background: linear-gradient(135deg, rgba(139, 0, 0, 0.03) 0%, transparent 100%);">
                             <h3 style="font-size:1rem;"><i class="fas fa-brain"></i> Wrathful Smite</h3>
-                            <p style="font-size:0.8rem;"><strong>BA, Self, Conc 1m.</strong> Hit: +1d6 Psychic + Frightened (WIS save end).</p>
+                            <p style="font-size:0.8rem;"><strong>BA, Self, Conc 1 min.</strong> Hit: +1d6 Psychic + Frightened (WIS save end).</p>
                             <div class="kurt-comment" style="color: #8b0000;">"Rädsla är ett vapen. Lärde mig det i överlevnad."</div>
                         </div>
                     </div>
@@ -1186,13 +1256,13 @@
                     <div class="spell-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
                         <div class="spell-card info-card" style="padding:15px; border-left: 3px solid #2c4a6b; background: linear-gradient(135deg, rgba(44, 74, 107, 0.03) 0%, transparent 100%);">
                             <h3 style="font-size:1rem;"><i class="fas fa-medal"></i> Heroism</h3>
-                            <p style="font-size:0.8rem;"><strong>1 Act, Touch, Conc 1m.</strong> Immune Fear + CHA Mod Temp HP/turn.</p>
+                            <p style="font-size:0.8rem;"><strong>1 Act, Touch, Conc 1 min.</strong> Immune Fear + CHA Mod Temp HP/turn.</p>
                             <div class="kurt-comment" style="color: #2c4a6b;">"Överlever genom vägran att ge upp. Inte mod - bara envishet."</div>
                         </div>
                         <div class="spell-card info-card" style="padding:15px; border-left: 3px solid #2c4a6b; background: linear-gradient(135deg, rgba(44, 74, 107, 0.03) 0%, transparent 100%);">
                             <h3 style="font-size:1rem;"><i class="fas fa-shield-alt"></i> Shield of Faith</h3>
-                            <p style="font-size:0.8rem;"><strong>BA, 60ft, Conc 10m.</strong> Target gets +2 AC.</p>
-                            <div class="kurt-comment" style="color: #2c4a6b;">"Eden skyddar mer än rustningen någonsin kunde. +2 RK håller mig vid liv."</div>
+                            <p style="font-size:0.8rem;"><strong>BA, 60ft, Conc 10 min.</strong> Target gets +2 AC.</p>
+                            <div class="kurt-comment" style="color: #2c4a6b;">"Eden skyddar mer än rustningen någonsin kunde. +2 AC håller mig vid liv."</div>
                         </div>
                     </div>
                 </div>
@@ -1211,7 +1281,7 @@
                         </div>
                         <div class="spell-card info-card" style="padding:15px; border-left: 3px solid #4a3626;">
                             <h3 style="font-size:1rem;"><i class="fas fa-eye"></i> Detect Evil/Good</h3>
-                            <p style="font-size:0.8rem;"><strong>1 Act, Self, Conc 10m.</strong> Sense undead/fiends etc within 30ft.</p>
+                            <p style="font-size:0.8rem;"><strong>1 Act, Self, Conc 10 min.</strong> Sense undead/fiends etc within 30ft.</p>
                             <div class="kurt-comment">"Äkta ondska lyser annorlunda än desperata överlevare."</div>
                         </div>
                     </div>
@@ -1289,7 +1359,7 @@
                             <div class="person-meta">
                                 <p><strong>Status:</strong> Segrare i Zügwern</p>
                                 <!-- UPDATED RELATION: Referring to Kurt's motive -->
-                                <p><strong>Relation:</strong> Sökte sig till Lisse för att vinna tillbaka sin förlorade ära.</p>
+                                <p><strong>Relation:</strong> Orsaken till min exil. Jag är här för att återvinna hedern han tog.</p>
                             </div>
                         </div>
                     </div>
@@ -1495,21 +1565,28 @@
 
         // Journal Internal Navigation
         let currentJournalPage = 1;
-        const totalJournalPages = 4;
+        const totalJournalPages = 6; // UPDATED: Now 6 pages
 
         function switchJournalPage(pageNum) {
-            if (pageNum < 1) pageNum = 1;
-            if (pageNum > totalJournalPages) pageNum = 1; 
+            let targetPage = currentJournalPage + pageNum;
+            
+            // Handle arrow clicks (passed as 1 or -1) vs direct jumps
+            // If the argument is small (like 1 or -1), treat as relative move
+            // But the button calls use direct switching logic below based on adding/subtracting
+            // Let's stick to the existing simple logic but fix the bounds:
+            
+            if (targetPage < 1) targetPage = totalJournalPages;
+            if (targetPage > totalJournalPages) targetPage = 1; 
             
             document.querySelectorAll('.journal-page').forEach(el => {
                 el.classList.remove('active');
             });
 
-            document.getElementById('journal-page-' + pageNum).classList.add('active');
+            document.getElementById('journal-page-' + targetPage).classList.add('active');
             
-            const romanNums = ["I", "II", "III", "IV", "V"];
-            document.getElementById('journal-page-indicator').innerText = "Blad " + romanNums[pageNum-1];
-            currentJournalPage = pageNum;
+            const romanNums = ["I", "II", "III", "IV", "V", "VI"];
+            document.getElementById('journal-page-indicator').innerText = "Blad " + romanNums[targetPage-1];
+            currentJournalPage = targetPage;
         }
 
         // Spell Slot Toggle
