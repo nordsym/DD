@@ -745,6 +745,65 @@
             font-style: italic;
             margin-left: auto;
         }
+
+        /* --- NEW: CONDITIONS & EXHAUSTION CSS --- */
+        .conditions-section {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(139, 69, 19, 0.2);
+        }
+        .exhaustion-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .exhaustion-level {
+            font-family: 'Special Elite', monospace;
+            font-size: 1.2rem;
+            color: #8b0000;
+            margin: 0 10px;
+        }
+        .conditions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
+            gap: 8px;
+        }
+        .condition-btn {
+            background: rgba(0,0,0,0.05);
+            border: 1px solid var(--text-sub);
+            border-radius: 4px;
+            padding: 6px 4px;
+            font-family: 'EB Garamond', serif;
+            font-size: 0.85rem;
+            color: var(--text-sub);
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.1s;
+            opacity: 0.7;
+        }
+        .condition-btn:hover {
+            opacity: 1;
+            border-color: var(--accent-gold);
+        }
+        .condition-btn.active {
+            background: #8b0000;
+            color: #fff;
+            border-color: #5c0000;
+            opacity: 1;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        body.dark-mode .condition-btn {
+            background: rgba(255,255,255,0.05);
+            border-color: #555;
+            color: #aaa;
+        }
+        body.dark-mode .condition-btn.active {
+            background: #cf6679;
+            color: #000;
+        }
+
         /* Dark Mode Adjustments */
         body.dark-mode .combat-stats {
             background: rgba(139, 69, 19, 0.15);
@@ -913,6 +972,37 @@
                             </div>
                             <span class="dice-note">(2d10 återstår)</span>
                         </div>
+
+                        <!-- CONDITIONS & EXHAUSTION -->
+                        <div class="conditions-section">
+                            <!-- Exhaustion Tracker -->
+                            <div class="exhaustion-row">
+                                <label style="font-family: 'Cinzel'; font-weight: 600; width: auto;">Utmattning:</label>
+                                <button class="stat-btn minus" onclick="updateExhaustion(-1)" style="width: 30px; height: 30px; font-size: 1.2rem;">−</button>
+                                <span id="exhaustion-display" class="exhaustion-level">Nivå 0</span>
+                                <button class="stat-btn plus" onclick="updateExhaustion(1)" style="width: 30px; height: 30px; font-size: 1.2rem;">+</button>
+                            </div>
+
+                            <!-- Conditions Grid -->
+                            <label style="font-family: 'Cinzel'; font-weight: 600; display: block; margin-bottom: 8px;">Tillstånd:</label>
+                            <div class="conditions-grid" id="conditions-container">
+                                <button class="condition-btn" onclick="toggleCondition(this, 'Blinded')">Blinded</button>
+                                <button class="condition-btn" onclick="toggleCondition(this, 'Charmed')">Charmed</button>
+                                <button class="condition-btn" onclick="toggleCondition(this, 'Deafened')">Deafened</button>
+                                <button class="condition-btn" onclick="toggleCondition(this, 'Frightened')">Frightened</button>
+                                <button class="condition-btn" onclick="toggleCondition(this, 'Grappled')">Grappled</button>
+                                <button class="condition-btn" onclick="toggleCondition(this, 'Incapacitated')">Incapacitated</button>
+                                <button class="condition-btn" onclick="toggleCondition(this, 'Invisible')">Invisible</button>
+                                <button class="condition-btn" onclick="toggleCondition(this, 'Paralyzed')">Paralyzed</button>
+                                <button class="condition-btn" onclick="toggleCondition(this, 'Petrified')">Petrified</button>
+                                <button class="condition-btn" onclick="toggleCondition(this, 'Poisoned')">Poisoned</button>
+                                <button class="condition-btn" onclick="toggleCondition(this, 'Prone')">Prone</button>
+                                <button class="condition-btn" onclick="toggleCondition(this, 'Restrained')">Restrained</button>
+                                <button class="condition-btn" onclick="toggleCondition(this, 'Stunned')">Stunned</button>
+                                <button class="condition-btn" onclick="toggleCondition(this, 'Unconscious')">Unconscious</button>
+                            </div>
+                        </div>
+
                     </div>
 
                     <div class="info-card">
@@ -2043,14 +2133,20 @@
         // Get combat stats from localStorage
         function getCombatStats() {
             const saved = localStorage.getItem('kurt_combat_stats');
-            return saved ? JSON.parse(saved) : {
+            const defaults = {
                 current_hp: 20,
                 max_hp: 20,
                 temp_hp: 0,
                 hit_dice_used: 0,
-                death_saves_success: 0,
-                death_saves_failure: 0
+                exhaustion: 0, // NEW
+                active_conditions: [] // NEW
             };
+            
+            if (!saved) return defaults;
+            
+            // Merge saved with defaults to handle new fields for existing users
+            const parsed = JSON.parse(saved);
+            return { ...defaults, ...parsed };
         }
 
         // Save to localStorage
@@ -2086,6 +2182,49 @@
             if (diceNote) {
                 diceNote.textContent = `(${remaining}d10 återstår)`;
             }
+
+            // Update Exhaustion
+            const exDisplay = document.getElementById('exhaustion-display');
+            if (exDisplay) {
+                exDisplay.textContent = `Nivå ${stats.exhaustion}`;
+                exDisplay.style.color = stats.exhaustion > 0 ? '#8b0000' : 'var(--text-sub)';
+                if (stats.exhaustion >= 6) exDisplay.textContent += " (DÖD)";
+            }
+
+            // Update Conditions
+            const buttons = document.querySelectorAll('.condition-btn');
+            buttons.forEach(btn => {
+                const condition = btn.textContent;
+                if (stats.active_conditions.includes(condition)) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        }
+
+        // New Condition Functions
+        function updateExhaustion(change) {
+            const stats = getCombatStats();
+            let newLevel = (stats.exhaustion || 0) + change;
+            newLevel = Math.max(0, Math.min(6, newLevel)); // Clamp 0-6
+            stats.exhaustion = newLevel;
+            saveCombatStats(stats);
+            updateCombatDisplay();
+        }
+
+        function toggleCondition(btn, conditionName) {
+            const stats = getCombatStats();
+            const index = stats.active_conditions.indexOf(conditionName);
+            
+            if (index > -1) {
+                stats.active_conditions.splice(index, 1); // Remove
+            } else {
+                stats.active_conditions.push(conditionName); // Add
+            }
+            
+            saveCombatStats(stats);
+            updateCombatDisplay();
         }
 
         // Initialize combat tracking
@@ -2093,8 +2232,11 @@
             // Initial display update
             updateCombatDisplay();
             
-            // +/- Button handlers
+            // +/- Button handlers (for HP)
             document.querySelectorAll('.stat-btn').forEach(btn => {
+                // Skip condition buttons
+                if (btn.hasAttribute('onclick')) return;
+
                 btn.addEventListener('click', () => {
                     const stats = getCombatStats();
                     const statName = btn.dataset.stat;
