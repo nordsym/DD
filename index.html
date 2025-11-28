@@ -656,6 +656,51 @@
             .journal-gallery > .journal-card, .spell-grid > .spell-card { break-inside: avoid; margin-bottom: 30px; }
         }
         
+        /* IPAD LANDSCAPE / COMPACT DESKTOP OPTIMIZATION (New Rule) */
+        @media (min-width: 769px) and (max-width: 1180px) {
+            .sidebar {
+                width: 90px; /* Slim Sidebar */
+                align-items: center;
+                padding-left: 0; padding-right: 0;
+            }
+            
+            .book-title { display: none; /* Hide heavy title */ }
+            
+            .nav-btn {
+                font-size: 0 !important; /* Kill text */
+                display: flex;
+                justify-content: center;
+                width: 100%;
+                padding: 15px 0;
+                margin: 5px 0;
+                grid-template-columns: 1fr; /* Reset grid */
+            }
+            
+            .nav-icon {
+                font-size: 1.8rem; /* Bigger icons */
+                margin: 0;
+                width: auto;
+            }
+            
+            .nav-btn::before { display: none; } /* Remove decorative dot */
+            
+            .nav-btn.active-btn {
+                padding-left: 0;
+                border-left: 4px solid var(--accent-gold);
+                background: rgba(255,255,255,0.05);
+            }
+            
+            .dark-mode-toggle {
+                font-size: 0; /* Icon only toggle */
+                width: 50px;
+                height: 50px;
+                padding: 0;
+                justify-content: center;
+                border-radius: 50%;
+            }
+            .dark-mode-toggle i { font-size: 1.2rem; margin: 0; }
+        }
+
         /* IPAD / MOBILE OPTIMIZATION - COMPLETE OVERHAUL */
         @media (max-width: 768px) {
             /* 1. GLOBAL PERFORMANCE: Kill all animations and transitions on mobile */
