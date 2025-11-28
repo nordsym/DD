@@ -1118,6 +1118,15 @@
                             <span class="dice-note">(2d10 återstår)</span>
                         </div>
 
+                        <!-- LAY ON HANDS (NEW TRACKER) -->
+                        <div class="combat-stat-row" style="margin-top: 15px; border-top: 1px solid rgba(139, 69, 19, 0.2); padding-top: 15px;">
+                            <label style="width: auto; flex-grow: 1;"><i class="fas fa-hand-holding-heart"></i> Helande Händer:</label>
+                            <button class="stat-btn minus" data-stat="lay_on_hands" aria-label="Minska Pool" style="width: 40px; height: 40px; font-size: 1.2rem;">−</button>
+                            <input type="number" class="stat-value" id="lay-on-hands" value="10" min="0" max="10" style="width: 60px; height: 40px; font-size: 1.2rem;">
+                            <button class="stat-btn plus" data-stat="lay_on_hands" aria-label="Öka Pool" style="width: 40px; height: 40px; font-size: 1.2rem;">+</button>
+                            <span class="stat-max">/ 10</span>
+                        </div>
+
                         <!-- CONDITIONS & EXHAUSTION -->
                         <div class="conditions-section">
                             <!-- Exhaustion Tracker -->
@@ -2394,14 +2403,18 @@
                 max_hp: 20,
                 temp_hp: 0,
                 hit_dice_used: 0,
-                exhaustion: 0, // NEW
-                active_conditions: [] // NEW
+                lay_on_hands: 10, // NEW: Level 2 * 5
+                exhaustion: 0, 
+                active_conditions: [] 
             };
             
             if (!saved) return defaults;
             
             // Merge saved with defaults to handle new fields for existing users
             const parsed = JSON.parse(saved);
+            // Ensure lay_on_hands exists for returning users
+            if (parsed.lay_on_hands === undefined) parsed.lay_on_hands = 10;
+            
             return { ...defaults, ...parsed };
         }
 
@@ -2417,9 +2430,11 @@
             // Update HP inputs
             const currentHpInput = document.getElementById('current-hp');
             const tempHpInput = document.getElementById('temp-hp');
+            const layOnHandsInput = document.getElementById('lay-on-hands'); // NEW
             
             if (currentHpInput) currentHpInput.value = stats.current_hp;
             if (tempHpInput) tempHpInput.value = stats.temp_hp;
+            if (layOnHandsInput) layOnHandsInput.value = stats.lay_on_hands; // NEW
             
             // Update hit dice visual state
             document.querySelectorAll('.hit-die').forEach((die, index) => {
@@ -2488,7 +2503,7 @@
             // Initial display update
             updateCombatDisplay();
             
-            // +/- Button handlers (for HP)
+            // +/- Button handlers (for HP and LoH)
             document.querySelectorAll('.stat-btn').forEach(btn => {
                 // Skip condition buttons
                 if (btn.hasAttribute('onclick')) return;
@@ -2498,12 +2513,31 @@
                     const statName = btn.dataset.stat;
                     const isMinus = btn.classList.contains('minus');
                     
-                    if (isMinus) {
-                        stats[statName] = Math.max(0, stats[statName] - 1);
+                    if (statName === 'lay_on_hands') {
+                        // Lay on Hands Logic (Max 10)
+                        const maxLoH = 10; 
+                        if (isMinus) {
+                            // "Minus" here means USING points, so the pool decreases
+                            // Actually UI convention: Minus button usually decreases the number shown.
+                            // So Minus = decrease remaining pool.
+                            stats.lay_on_hands = Math.max(0, stats.lay_on_hands - 1); // Spend 1 point usually? Or just decrement tracker
+                        } else {
+                            // Plus = regain (long rest)
+                            stats.lay_on_hands = Math.min(maxLoH, stats.lay_on_hands + 1);
+                        }
+                    } else if (statName === 'current_hp') {
+                        if (isMinus) {
+                            stats[statName] = Math.max(0, stats[statName] - 1);
+                        } else {
+                            stats[statName] = Math.min(stats.max_hp, stats[statName] + 1);
+                        }
                     } else {
-                        // Plus button
-                        const max = statName === 'current_hp' ? stats.max_hp : 999;
-                        stats[statName] = Math.min(max, stats[statName] + 1);
+                        // Temp HP
+                        if (isMinus) {
+                            stats[statName] = Math.max(0, stats[statName] - 1);
+                        } else {
+                            stats[statName] = Math.min(999, stats[statName] + 1);
+                        }
                     }
                     
                     saveCombatStats(stats);
@@ -2515,7 +2549,7 @@
             document.querySelectorAll('.stat-value').forEach(input => {
                 input.addEventListener('change', () => {
                     const stats = getCombatStats();
-                    const statName = input.id.replace('-', '_'); // 'current-hp' → 'current_hp'
+                    const statName = input.id.replace(/-/g, '_'); // 'lay-on-hands' -> 'lay_on_hands'
                     
                     let newValue = parseInt(input.value);
                     if (isNaN(newValue)) newValue = 0;
@@ -2523,6 +2557,8 @@
                     // Clamp to valid range
                     if (statName === 'current_hp') {
                         stats[statName] = Math.max(0, Math.min(stats.max_hp, newValue));
+                    } else if (statName === 'lay_on_hands') {
+                        stats[statName] = Math.max(0, Math.min(10, newValue));
                     } else {
                         stats[statName] = Math.max(0, newValue);
                     }
