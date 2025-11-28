@@ -2,10 +2,9 @@
 <html lang="sv">
 <head>
     <meta charset="UTF-8">
-    <!-- Viewport Optimization: cover ensures fullscreen feel, user-scalable=no prevents accidental zoom -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     
-    <!-- CSP: Updated to allow images from Firebase Storage -->
+    <!-- CSP -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; script-src 'self' 'unsafe-inline'; img-src 'self' data: https://raw.githubusercontent.com https://firebasestorage.googleapis.com;">
     
     <title>Kampanjkodex: Kurt Eisenwald</title>
@@ -71,11 +70,7 @@
             --page-shadow: #000;
         }
 
-        * { 
-            box-sizing: border-box; 
-            /* Disable gray highlight on touch */
-            -webkit-tap-highlight-color: transparent;
-        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
             font-family: 'EB Garamond', serif;
@@ -84,17 +79,10 @@
             color: var(--text-main);
             margin: 0;
             padding: 0;
-            
-            /* LOCK VIEWPORT HEIGHT */
-            height: 100vh; 
-            height: 100dvh; 
-            
+            height: 100vh;
+            height: 100dvh; /* Mobile viewport fix */
             display: flex;
-            
-            /* LOCK BODY SCROLL - Prevent whole page bounce */
             overflow: hidden; 
-            overscroll-behavior: none;
-            
             transition: background-color 0.5s ease;
         }
 
@@ -114,11 +102,11 @@
             display: flex;
             flex-direction: column;
             padding: 30px 0;
-            flex-shrink: 0;
+            flex-shrink: 0; /* VIKTIGT: Förhindrar att menyn krymper på iPad */
             overflow-y: auto;
             z-index: 10;
             position: relative;
-            /* No transition for performance */
+            transition: background-color 0.5s ease;
         }
 
         .sidebar::before {
@@ -146,24 +134,17 @@
             border-left: none; border-right: none;
             padding: 20px 10px;
             margin: 0 20px 40px 20px;
-            
-            /* Solid background masks lines */
-            background-color: var(--spine-color);
+            background-color: var(--spine-color); /* Fix för linjer */
             background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='leather'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23leather)' opacity='0.3'/%3E%3C/svg%3E");
-            
             cursor: pointer;
+            transition: all 0.3s;
             position: relative;
             z-index: 2;
-            /* Touch optimized */
-            touch-action: manipulation;
         }
         
-        /* Hover only on devices that support it */
-        @media (hover: hover) {
-            .book-title:hover {
-                color: var(--accent-shine);
-                text-shadow: 0 0 10px var(--accent-shine);
-            }
+        .book-title:hover {
+            color: var(--accent-shine);
+            text-shadow: 0 0 10px var(--accent-shine);
         }
 
         .nav-btn {
@@ -173,43 +154,29 @@
             font-family: 'Cinzel', serif;
             font-size: 0.95rem;
             letter-spacing: 1px;
-            
-            /* Inset spacing and Grid layout */
             padding: 15px 20px 15px 45px;
             margin: 5px 15px;
             width: auto;
-            
             display: grid;
             grid-template-columns: 35px 1fr;
             align-items: center;
             gap: 10px;
             text-align: left;
-            
             cursor: pointer;
+            transition: all 0.3s ease;
             position: relative;
             text-shadow: 0 1px 2px rgba(0,0,0,0.8);
             z-index: 2;
-            touch-action: manipulation;
         }
         
         body.dark-mode .nav-btn { color: #5c6bc0; }
 
-        @media (hover: hover) {
-            .nav-btn:hover {
-                color: var(--accent-shine);
-                background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05));
-                transition: background-color 0.15s, color 0.15s;
-            }
+        .nav-btn:hover {
+            color: var(--accent-shine);
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05));
         }
 
-        .nav-icon { 
-            width: auto; 
-            display: inline-block; 
-            text-align: center; 
-            justify-self: center;
-            margin-right: 0; 
-            color: inherit; 
-        }
+        .nav-icon { width: auto; display: inline-block; text-align: center; justify-self: center; margin-right: 0; color: inherit; }
 
         .nav-btn.active-btn {
             color: #fff;
@@ -218,11 +185,17 @@
             text-shadow: 0 0 8px var(--accent-gold);
             padding-left: 41px; 
         }
+        
+        body.dark-mode .nav-btn.active-btn {
+            color: var(--ink-color);
+            text-shadow: 0 0 10px var(--ink-color);
+            border-left-color: var(--ink-color);
+        }
 
         .nav-btn::before {
             content: '✦'; font-family: 'Cinzel Decorative', serif;
             position: absolute; left: 20px; top: 50%; transform: translateY(-50%) scale(0);
-            opacity: 0; color: var(--accent-shine); 
+            opacity: 0; color: var(--accent-shine); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         
         body.dark-mode .nav-btn::before { content: '☾'; color: var(--ink-color); }
@@ -232,13 +205,9 @@
         .dark-mode-toggle {
             margin-top: auto; align-self: center; background: transparent; border: 1px solid var(--accent-gold);
             color: var(--accent-gold); padding: 10px 20px; font-family: 'Cinzel', serif; cursor: pointer;
-            margin-bottom: 20px; display: flex; align-items: center; gap: 10px; z-index: 2;
-            touch-action: manipulation;
+            margin-bottom: 20px; transition: all 0.3s; display: flex; align-items: center; gap: 10px; z-index: 2;
         }
-        
-        @media (hover: hover) {
-            .dark-mode-toggle:hover { box-shadow: 0 0 15px var(--magic-glow); background: rgba(255,255,255,0.05); }
-        }
+        .dark-mode-toggle:hover { box-shadow: 0 0 15px var(--magic-glow); background: rgba(255,255,255,0.05); }
 
         /* --- CONTENT AREA (PAGE STACK) --- */
         .content-area {
@@ -249,7 +218,6 @@
                 radial-gradient(circle at 50% 50%, transparent 60%, rgba(0,0,0, 0.1) 100%),
                 linear-gradient(to bottom, var(--parchment-blend) 0%, var(--parchment-bg) 100%);
             
-            /* Page Stack Effect */
             margin: 20px 30px 30px 0;
             border: 1px solid var(--page-border);
             border-left: none;
@@ -266,36 +234,58 @@
             display: flex;
             flex-direction: column;
             overflow: hidden; 
+            transition: background-color 0.5s ease;
+            animation: parchmentBreath 10s ease-in-out infinite; /* Själen är tillbaka */
         }
         
-        /* INNER SCROLL CONTAINER - The only thing that scrolls */
         .scroll-content {
             flex: 1;
             overflow-y: auto;
             padding: 50px;
             scroll-behavior: smooth;
             scrollbar-width: none;
-            /* Native momentum scrolling on iOS */
-            -webkit-overflow-scrolling: touch; 
-            /* Contain overscroll bounce to this element */
-            overscroll-behavior: contain; 
+            -webkit-overflow-scrolling: touch;
         }
         .scroll-content::-webkit-scrollbar { display: none; }
         
+        @keyframes parchmentBreath {
+            0%, 100% { background-color: var(--parchment-bg); }
+            50% { background-color: var(--parchment-blend); }
+        }
+
         /* Brass Corners */
         .brass-corner-tl, .brass-corner-tr {
             position: absolute; width: 50px; height: 50px; pointer-events: none; opacity: 1;
             border-top: 4px double var(--accent-gold);
             z-index: 5;
+            transition: border-color 0.5s;
+            animation: brassGlow 4s ease-in-out infinite; /* Själen är tillbaka */
         }
         .brass-corner-tl { top: 0; left: 0; border-left: 4px double var(--accent-gold); border-radius: 0 0 10px 0; }
         .brass-corner-tr { top: 0; right: 0; border-right: 4px double var(--accent-gold); border-radius: 0 0 0 10px; }
+
+        @keyframes brassGlow {
+            0%, 100% { border-color: var(--accent-gold); box-shadow: 1px 1px 2px rgba(0,0,0,0.3); }
+            50% { border-color: var(--accent-shine); box-shadow: 1px 1px 8px var(--magic-glow); }
+        }
+        
+        body.dark-mode .brass-corner-tl, body.dark-mode .brass-corner-tr { animation: brassGlowDark 4s ease-in-out infinite; }
+        @keyframes brassGlowDark {
+            0%, 100% { border-color: var(--ink-color); box-shadow: 1px 1px 5px var(--magic-glow); }
+            50% { border-color: var(--accent-shine); box-shadow: 1px 1px 12px var(--ink-color); }
+        }
+
+        /* Fade Animation */
+        @keyframes pageFade {
+            0% { opacity: 0; transform: translateY(5px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
 
         .section-container {
             display: none; max-width: 900px; margin: 0 auto; padding-bottom: 80px;
             min-height: 80vh; position: relative;
         }
-        .section-container.active { display: block; }
+        .section-container.active { display: block; animation: pageFade 0.4s ease-out; /* Själen är tillbaka */ }
 
         /* Typography */
         h1, h2, h3 { font-family: 'Cinzel', serif; color: var(--text-main); margin-top: 0; }
@@ -314,6 +304,14 @@
             text-shadow: 1px 1px 0 rgba(255,255,255,0.1); position: relative; display: inline-block; overflow: hidden;
         }
         
+        .page-title::after {
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, var(--accent-shine), transparent);
+            opacity: 0.3; animation: titleShimmer 8s ease-in-out infinite;
+        }
+        @keyframes titleShimmer { 0%, 90%, 100% { left: -100%; } 45%, 55% { left: 100%; } }
+        body.dark-mode .page-title::after { background: linear-gradient(90deg, transparent, var(--ink-color), transparent); opacity: 0.5; }
+
         .page-title::before {
             content: ''; position: absolute; bottom: -5px; left: 10%; width: 80%; height: 2px;
             background: linear-gradient(to right, transparent, var(--text-sub), transparent); opacity: 0.3;
@@ -336,6 +334,7 @@
             background: transparent; margin-bottom: 25px; position: relative;
             border: 2px solid var(--card-border); border-radius: 2px; padding: 20px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease; /* Lite liv när man rör dem */
         }
         
         .info-card h3 { 
@@ -349,15 +348,14 @@
         .spell-slot {
             width: 30px; height: 30px; border: 2px solid var(--accent-gold); border-radius: 50%;
             display: flex; align-items: center; justify-content: center; font-size: 1.5rem;
-            cursor: pointer; background: transparent; color: var(--accent-gold);
-            touch-action: manipulation;
+            cursor: pointer; transition: all 0.3s; background: transparent; color: var(--accent-gold);
         }
         .spell-slot.available { color: var(--accent-gold); }
         .spell-slot.used { background: var(--accent-gold); color: var(--parchment-bg); }
-        
+        .spell-slot:hover { transform: scale(1.1); box-shadow: 0 0 10px var(--magic-glow); }
         body.dark-mode .spell-slot.available { color: var(--ink-color); border-color: var(--ink-color); }
         body.dark-mode .spell-slot.used { background: var(--ink-color); }
-        .spell-page { display: none; }
+        .spell-page { display: none; animation: pageFade 0.5s ease-out; }
         .spell-page.active { display: block; }
 
         /* Timeline */
@@ -387,20 +385,16 @@
 
         /* Sketches */
         .sketch-container { margin: 10px 0; text-align: center; position: relative; padding: 10px; background: transparent; border: none; transform: rotate(-0.5deg); }
-        
         .sketch-container img { 
             mix-blend-mode: var(--image-filter); 
             filter: var(--image-adjust); 
-            transition: filter 0.5s ease, mix-blend-mode 0.5s ease;
+            transition: transform 0.3s ease, filter 0.5s ease, mix-blend-mode 0.5s ease; 
         }
+        .sketch-container img:hover { transform: scale(1.02) rotate(0.5deg); }
         
         /* HERO IMAGE DARK MODE HANDLING */
-        .hero-image-container svg {
-            transition: filter 0.5s ease;
-        }
-        body.dark-mode .hero-image-container svg {
-            filter: invert(1) hue-rotate(180deg) contrast(1.1) drop-shadow(0 0 5px rgba(255,255,255,0.2)) !important;
-        }
+        .hero-image-container svg { transition: filter 0.5s ease; }
+        body.dark-mode .hero-image-container svg { filter: invert(1) hue-rotate(180deg) contrast(1.1) drop-shadow(0 0 5px rgba(255,255,255,0.2)) !important; }
 
         /* Map Markers */
         .map-marker {
@@ -433,12 +427,10 @@
             box-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
 
-        .wax-seal { position: absolute; top: -15px; right: -10px; width: 35px; height: 35px; background: radial-gradient(circle, #8b0000 0%, #5c0000 70%); border-radius: 50%; border: 2px solid #3d0000; box-shadow: 0 2px 4px rgba(0,0,0,0.4); z-index: 3; cursor: pointer; touch-action: manipulation; }
+        .wax-seal { position: absolute; top: -15px; right: -10px; width: 35px; height: 35px; background: radial-gradient(circle, #8b0000 0%, #5c0000 70%); border-radius: 50%; border: 2px solid #3d0000; box-shadow: 0 2px 4px rgba(0,0,0,0.4); z-index: 3; cursor: pointer; }
         .wax-seal::before { content: '⚔'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #d4af37; font-size: 18px; font-family: 'Cinzel', serif; text-shadow: 0 1px 1px rgba(0,0,0,0.5); }
         .wax-seal::after { content: ''; position: absolute; top: 50%; left: 50%; width: 100%; height: 100%; border-radius: 50%; background: radial-gradient(circle, var(--magic-glow) 0%, transparent 70%); transform: translate(-50%, -50%) scale(0); opacity: 0; transition: all 0.3s; pointer-events: none; }
-        @media (hover: hover) {
-            .wax-seal:hover::after { transform: translate(-50%, -50%) scale(2); opacity: 0.6; }
-        }
+        .wax-seal:hover::after { transform: translate(-50%, -50%) scale(2); opacity: 0.6; }
         @keyframes sealBreak { 0% { transform: scale(1) rotate(0deg); } 50% { transform: scale(1.3) rotate(20deg); } 100% { transform: scale(1) rotate(0deg); } }
 
         .handwritten-caption { font-family: 'Caveat', cursive; color: var(--ink-color); font-size: 1.3rem; margin-top: 5px; text-align: center; display: block; font-weight: 600; }
@@ -446,59 +438,29 @@
 
         /* --- INVISIBLE INK SYSTEM (DARKVISION SECRETS) --- */
         .invisible-ink-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            opacity: 0; /* Hidden by default */
-            transition: opacity 0.8s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 4; /* Above image, below seal */
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0; 
+            transition: opacity 0.8s ease; display: flex; align-items: center; justify-content: center; z-index: 4;
         }
-
-        /* Reveal in Dark Mode */
-        body.dark-mode .invisible-ink-container {
-            opacity: 1;
-        }
-
-        /* Text style for the secret ink */
+        body.dark-mode .invisible-ink-container { opacity: 1; }
         .invisible-text {
-            font-family: 'Caveat', cursive;
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #ff3333; /* Neon red/blood */
-            text-shadow: 0 0 10px #ff0000, 0 0 20px #8b0000; /* Glow effect */
-            transform: rotate(-15deg);
-            mix-blend-mode: screen; /* Makes it look spectral */
-            text-align: center;
-            line-height: 1;
-            border: 3px double #ff3333;
-            padding: 10px 20px;
-            border-radius: 4px;
+            font-family: 'Caveat', cursive; font-size: 2.5rem; font-weight: 700; color: #ff3333; 
+            text-shadow: 0 0 10px #ff0000, 0 0 20px #8b0000; transform: rotate(-15deg); mix-blend-mode: screen; 
+            text-align: center; line-height: 1; border: 3px double #ff3333; padding: 10px 20px; border-radius: 4px;
             mask-image: url("data:image/svg+xml,%3Csvg width='200' height='100' viewBox='0 0 200 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.1' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.8'/%3E%3C/svg%3E");
         }
 
         /* Layouts */
         .journal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
-        .journal-page { display: none; }
+        .journal-page { display: none; animation: pageFade 0.5s ease-out; }
         .journal-page.active { display: block; }
         .journal-nav { display: flex; justify-content: center; align-items: center; margin: 20px 0 40px 0; font-family: 'Cinzel', serif; color: var(--ink-color); }
-        .journal-nav button { background: none; border: none; cursor: pointer; color: var(--ink-color); font-size: 1.2rem; margin: 0 15px; opacity: 0.6; touch-action: manipulation; }
-        
-        @media (hover: hover) {
-            .journal-nav button:hover { opacity: 1; }
-        }
+        .journal-nav button { background: none; border: none; cursor: pointer; color: var(--ink-color); font-size: 1.2rem; margin: 0 15px; opacity: 0.6; }
+        .journal-nav button:hover { opacity: 1; }
 
         /* Footer Nav */
         .page-controls { display: flex; justify-content: space-between; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--card-border); font-family: 'Cinzel', serif; }
-        .page-btn { background: none; border: none; color: var(--text-sub); cursor: pointer; font-family: 'Cinzel', serif; font-size: 1.1rem; display: flex; align-items: center; opacity: 0.7; touch-action: manipulation; }
-        @media (hover: hover) {
-            .page-btn:hover { opacity: 1; color: var(--accent-gold); }
-        }
+        .page-btn { background: none; border: none; color: var(--text-sub); cursor: pointer; font-family: 'Cinzel', serif; font-size: 1.1rem; display: flex; align-items: center; opacity: 0.7; transition: all 0.2s; }
+        .page-btn:hover { opacity: 1; color: var(--accent-gold); transform: scale(1.05); }
         .page-btn.disabled { opacity: 0.3; cursor: default; color: #999; }
         .page-num { font-size: 0.9rem; color: #888; font-family: 'Cinzel'; margin-top: 5px; }
 
@@ -513,202 +475,52 @@
         body.dark-mode .note-card { background: rgba(0,0,0,0.2); }
         
         /* --- SPELL PREP SYSTEM CSS --- */
-        /* Prep Indicator (Star) */
         .prep-indicator {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--text-sub);
-            opacity: 0.3;
-            user-select: none;
-            z-index: 5;
-            line-height: 1;
-            touch-action: manipulation;
+            position: absolute; top: 10px; right: 10px; font-size: 1.5rem; cursor: pointer; color: var(--text-sub); opacity: 0.3; transition: all 0.2s ease; user-select: none; z-index: 5; line-height: 1;
         }
-        @media (hover: hover) {
-            .prep-indicator:hover {
-                opacity: 0.8;
-                color: var(--accent-gold);
-                transition: opacity 0.15s;
-            }
-        }
-
-        /* Prepared State */
-        .spell-card.prepared {
-            border-left: 4px solid var(--accent-gold) !important;
-            background: rgba(197, 160, 89, 0.1);
-            box-shadow: 0 0 10px rgba(197, 160, 89, 0.2);
-        }
-        .spell-card.prepared .prep-indicator {
-            opacity: 1;
-            color: var(--accent-gold);
-            text-shadow: 0 0 5px rgba(197, 160, 89, 0.5);
-        }
-
-        /* Oath and Ritual Badges */
+        .prep-indicator:hover { opacity: 0.8; transform: scale(1.1); color: var(--accent-gold); }
+        .spell-card.prepared { border-left: 4px solid var(--accent-gold) !important; background: rgba(197, 160, 89, 0.1); box-shadow: 0 0 10px rgba(197, 160, 89, 0.2); }
+        .spell-card.prepared .prep-indicator { opacity: 1; color: var(--accent-gold); text-shadow: 0 0 5px rgba(197, 160, 89, 0.5); }
         .oath-badge, .ritual-badge {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            font-size: 0.7rem;
-            font-family: 'Cinzel', serif;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            padding: 4px 8px;
-            border-radius: 4px;
-            background: rgba(197, 160, 89, 0.2);
-            color: var(--accent-gold);
-            border: 1px solid var(--accent-gold);
+            position: absolute; top: 12px; right: 12px; font-size: 0.7rem; font-family: 'Cinzel', serif; text-transform: uppercase; letter-spacing: 1px; padding: 4px 8px; border-radius: 4px; background: rgba(197, 160, 89, 0.2); color: var(--accent-gold); border: 1px solid var(--accent-gold);
         }
-        .ritual-badge {
-            background: rgba(139, 69, 19, 0.1);
-            color: #8b4513;
-            border-color: #8b4513;
-        }
+        .ritual-badge { background: rgba(139, 69, 19, 0.1); color: #8b4513; border-color: #8b4513; }
         body.dark-mode .ritual-badge { color: #a1887f; border-color: #a1887f; }
-
-        /* Ensure daily spells have relative positioning for indicator */
-        .spell-card { position: relative; }
-        
-        /* Dark mode adjustments */
-        body.dark-mode .spell-card.prepared {
-            background: rgba(197, 160, 89, 0.15);
-            border-left-color: var(--accent-gold) !important;
-        }
+        .spell-card { position: relative; transition: background 0.3s, border-color 0.3s; }
+        body.dark-mode .spell-card.prepared { background: rgba(197, 160, 89, 0.15); border-left-color: var(--accent-gold) !important; }
 
         /* NY STIL FÖR KURTS KOMMENTARER PÅ SPELLCARDS */
         .kurt-comment {
-            font-family: 'Caveat', cursive;
-            font-size: 1.1rem;
-            color: var(--ink-color);
-            margin-top: 10px;
-            padding-top: 8px;
-            border-top: 1px dashed rgba(0,0,0,0.2);
-            font-style: italic;
-            font-weight: 600;
+            font-family: 'Caveat', cursive; font-size: 1.1rem; color: var(--ink-color); margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(0,0,0,0.2); font-style: italic; font-weight: 600;
         }
 
         /* Class Feature Card Style */
-        .class-feature {
-            border: 2px solid var(--accent-gold) !important;
-            box-shadow: 0 0 15px rgba(197, 160, 89, 0.15);
-        }
-        .class-feature h3 {
-            color: var(--accent-gold) !important;
-            border-bottom-color: var(--accent-gold) !important;
-        }
+        .class-feature { border: 2px solid var(--accent-gold) !important; box-shadow: 0 0 15px rgba(197, 160, 89, 0.15); }
+        .class-feature h3 { color: var(--accent-gold) !important; border-bottom-color: var(--accent-gold) !important; }
 
-        .note-date {
-            font-family: 'Cinzel', serif;
-            font-size: 0.8rem;
-            color: var(--text-sub);
-            opacity: 0.7;
-            margin-bottom: 5px;
-            display: block;
-        }
-        
-        .note-content {
-            font-family: 'Caveat', cursive;
-            font-size: 1.2rem;
-            color: var(--ink-color);
-            line-height: 1.4;
-            white-space: pre-wrap;
-        }
+        .note-date { font-family: 'Cinzel', serif; font-size: 0.8rem; color: var(--text-sub); opacity: 0.7; margin-bottom: 5px; display: block; }
+        .note-content { font-family: 'Caveat', cursive; font-size: 1.2rem; color: var(--ink-color); line-height: 1.4; white-space: pre-wrap; }
         
         .save-btn {
-            background: var(--accent-gold);
-            color: var(--spine-color);
-            border: 2px solid var(--spine-border);
-            font-family: 'Cinzel', serif;
-            font-weight: bold;
-            padding: 10px 20px;
-            cursor: pointer;
-            margin-top: 10px;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            touch-action: manipulation;
+            background: var(--accent-gold); color: var(--spine-color); border: 2px solid var(--spine-border); font-family: 'Cinzel', serif; font-weight: bold; padding: 10px 20px; cursor: pointer; margin-top: 10px; transition: all 0.2s; display: inline-flex; align-items: center; gap: 10px;
         }
+        .save-btn:hover { transform: scale(1.02); box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
         
-        .save-btn:hover {
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        }
-        
-        .delete-note {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            color: #8b0000;
-            background: none;
-            border: none;
-            cursor: pointer;
-            opacity: 0.5;
-            font-size: 1.2rem;
-            touch-action: manipulation;
-        }
-        .delete-note:hover { opacity: 1; }
+        .delete-note { position: absolute; top: 10px; right: 10px; color: #8b0000; background: none; border: none; cursor: pointer; opacity: 0.5; transition: opacity 0.2s; font-size: 1.2rem; }
+        .delete-note:hover { opacity: 1; transform: scale(1.1); }
 
         /* NY MODAL FÖR RADERING (Ersätter confirm()) */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0; 
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(2px);
-        }
-        
-        .modal-box {
-            background: var(--parchment-bg);
-            border: 4px double var(--accent-gold);
-            padding: 30px;
-            text-align: center;
-            max-width: 400px;
-            width: 90%;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-            position: relative;
-        }
-
-        .modal-title {
-            font-family: 'Cinzel', serif;
-            color: #8b0000;
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            border-bottom: 1px solid var(--text-sub);
-            padding-bottom: 10px;
-        }
-
-        .modal-btn {
-            padding: 10px 20px;
-            font-family: 'Cinzel', serif;
-            cursor: pointer;
-            border: none;
-            margin: 10px;
-            font-size: 1rem;
-            touch-action: manipulation;
-        }
-
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(2px); }
+        .modal-box { background: var(--parchment-bg); border: 4px double var(--accent-gold); padding: 30px; text-align: center; max-width: 400px; width: 90%; box-shadow: 0 10px 30px rgba(0,0,0,0.8); position: relative; }
+        .modal-title { font-family: 'Cinzel', serif; color: #8b0000; font-size: 1.5rem; margin-bottom: 15px; border-bottom: 1px solid var(--text-sub); padding-bottom: 10px; }
+        .modal-btn { padding: 10px 20px; font-family: 'Cinzel', serif; cursor: pointer; border: none; margin: 10px; font-size: 1rem; transition: transform 0.2s; }
         .btn-confirm { background: #8b0000; color: #fff; }
         .btn-cancel { background: transparent; border: 1px solid var(--text-sub); color: var(--text-main); }
+        .modal-btn:hover { transform: scale(1.05); }
 
         /* Thematic Text Area */
         textarea.thematic-input {
-            width: 100%; min-height: 150px; padding: 15px;
-            border: 2px solid var(--card-border); 
-            background: repeating-linear-gradient(transparent, transparent 30px, rgba(0,0,0,0.05) 31px); /* Lined paper */
-            font-family: 'Caveat', cursive; font-size: 1.3rem; color: var(--ink-color);
-            line-height: 31px; /* Matches lines */
-            resize: vertical; outline: none;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.05);
-            border-radius: 2px;
-            margin-bottom: 10px;
+            width: 100%; min-height: 150px; padding: 15px; border: 2px solid var(--card-border); background: repeating-linear-gradient(transparent, transparent 30px, rgba(0,0,0,0.05) 31px); font-family: 'Caveat', cursive; font-size: 1.3rem; color: var(--ink-color); line-height: 31px; resize: vertical; outline: none; box-shadow: inset 0 0 20px rgba(0,0,0,0.05); border-radius: 2px; margin-bottom: 10px;
         }
 
         /* Stats & Inputs */
@@ -722,195 +534,37 @@
         td:first-child { text-align: left; font-weight: bold; }
 
         /* --- NEW COMBAT STATS CSS --- */
-        /* Combat Stats Container */
-        .combat-stats {
-            background: rgba(139, 69, 19, 0.08);
-            border: 2px solid #8b5a2b; /* accent-bronze fallback */
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 30px;
-        }
-        .combat-stats .section-title {
-            font-family: 'Cinzel', serif;
-            font-size: 1.3rem;
-            color: #8b5a2b;
-            margin-bottom: 20px;
-            text-align: center;
-            border-bottom: 1px solid #8b5a2b;
-            padding-bottom: 10px;
-        }
-        /* Stat Row Layout */
-        .combat-stat-row {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-        .combat-stat-row label {
-            font-family: 'Cinzel', serif;
-            font-weight: 600;
-            width: 70px;
-            color: var(--text-main);
-        }
-        /* +/- Buttons (BIG TOUCH TARGETS) */
-        .stat-btn {
-            width: 48px;
-            height: 48px;
-            border: 2px solid #8b5a2b;
-            background: rgba(139, 69, 19, 0.1);
-            color: #8b5a2b;
-            font-size: 1.8rem;
-            font-weight: bold;
-            cursor: pointer;
-            border-radius: 6px;
-            line-height: 1;
-            /* NO transitions - instant feedback */
-            touch-action: manipulation;
-        }
-        .stat-btn:active {
-            background: rgba(197, 160, 89, 0.3);
-        }
-        /* Number Input (Also touch-friendly) */
-        .stat-value {
-            width: 70px;
-            height: 48px;
-            text-align: center;
-            font-size: 1.4rem;
-            font-weight: bold;
-            font-family: 'EB Garamond', serif;
-            border: 2px solid var(--accent-gold);
-            background: rgba(197, 160, 89, 0.08);
-            color: var(--text-main);
-            border-radius: 6px;
-        }
-        /* Remove spinner arrows on number input */
-        .stat-value::-webkit-inner-spin-button,
-        .stat-value::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-        .stat-value {
-            -moz-appearance: textfield;
-        }
-        /* Max HP Display */
-        .stat-max {
-            font-size: 1.2rem;
-            color: var(--text-sub);
-            font-family: 'EB Garamond', serif;
-        }
-        /* Hit Dice Row */
-        .hit-dice-row {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 20px;
-            padding-top: 15px;
-            border-top: 1px solid rgba(139, 69, 19, 0.2);
-        }
-        .hit-dice-row label {
-            font-family: 'Cinzel', serif;
-            font-weight: 600;
-            color: var(--text-main);
-        }
-        .dice-container {
-            display: flex;
-            gap: 8px;
-        }
-        /* Hit Die Buttons */
-        .hit-die {
-            width: 50px;
-            height: 50px;
-            font-size: 2rem;
-            border: none;
-            background: none;
-            cursor: pointer;
-            color: var(--accent-gold);
-            touch-action: manipulation;
-        }
-        .hit-die.used {
-            opacity: 0.25;
-            text-decoration: line-through;
-            color: var(--text-sub);
-        }
-        .dice-note {
-            font-size: 0.9rem;
-            color: var(--text-sub);
-            font-style: italic;
-            margin-left: auto;
-        }
-
-        /* --- NEW: CONDITIONS & EXHAUSTION CSS --- */
-        .conditions-section {
-            margin-top: 20px;
-            padding-top: 15px;
-            border-top: 1px solid rgba(139, 69, 19, 0.2);
-        }
-        .exhaustion-row {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-        .exhaustion-level {
-            font-family: 'Special Elite', monospace;
-            font-size: 1.2rem;
-            color: #8b0000;
-            margin: 0 10px;
-        }
-        .conditions-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
-            gap: 8px;
-        }
-        .condition-btn {
-            background: rgba(0,0,0,0.05);
-            border: 1px solid var(--text-sub);
-            border-radius: 4px;
-            padding: 6px 4px;
-            font-family: 'EB Garamond', serif;
-            font-size: 0.85rem;
-            color: var(--text-sub);
-            cursor: pointer;
-            text-align: center;
-            transition: all 0.1s;
-            opacity: 0.7;
-            touch-action: manipulation;
-        }
-        @media (hover: hover) {
-            .condition-btn:hover {
-                opacity: 1;
-                border-color: var(--accent-gold);
-            }
-        }
-        .condition-btn.active {
-            background: #8b0000;
-            color: #fff;
-            border-color: #5c0000;
-            opacity: 1;
-            font-weight: bold;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-        body.dark-mode .condition-btn {
-            background: rgba(255,255,255,0.05);
-            border-color: #555;
-            color: #aaa;
-        }
-        body.dark-mode .condition-btn.active {
-            background: #cf6679;
-            color: #000;
-        }
-
-        /* Dark Mode Adjustments */
-        body.dark-mode .combat-stats {
-            background: rgba(139, 69, 19, 0.15);
-            border-color: #8b5a2b;
-        }
-        body.dark-mode .stat-btn {
-            background: rgba(139, 69, 19, 0.2);
-        }
-        body.dark-mode .stat-value {
-            background: rgba(197, 160, 89, 0.12);
-        }
+        .combat-stats { background: rgba(139, 69, 19, 0.08); border: 2px solid #8b5a2b; border-radius: 8px; padding: 20px; margin-bottom: 30px; }
+        .combat-stats .section-title { font-family: 'Cinzel', serif; font-size: 1.3rem; color: #8b5a2b; margin-bottom: 20px; text-align: center; border-bottom: 1px solid #8b5a2b; padding-bottom: 10px; }
+        .combat-stat-row { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
+        .combat-stat-row label { font-family: 'Cinzel', serif; font-weight: 600; width: 70px; color: var(--text-main); }
+        .stat-btn { width: 48px; height: 48px; border: 2px solid #8b5a2b; background: rgba(139, 69, 19, 0.1); color: #8b5a2b; font-size: 1.8rem; font-weight: bold; cursor: pointer; border-radius: 6px; line-height: 1; transition: background 0.1s; }
+        .stat-btn:active { background: rgba(197, 160, 89, 0.3); }
+        .stat-value { width: 70px; height: 48px; text-align: center; font-size: 1.4rem; font-weight: bold; font-family: 'EB Garamond', serif; border: 2px solid var(--accent-gold); background: rgba(197, 160, 89, 0.08); color: var(--text-main); border-radius: 6px; }
+        .stat-value::-webkit-inner-spin-button, .stat-value::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        .stat-value { -moz-appearance: textfield; }
+        .stat-max { font-size: 1.2rem; color: var(--text-sub); font-family: 'EB Garamond', serif; }
+        .hit-dice-row { display: flex; align-items: center; gap: 10px; margin-top: 20px; padding-top: 15px; border-top: 1px solid rgba(139, 69, 19, 0.2); }
+        .hit-dice-row label { font-family: 'Cinzel', serif; font-weight: 600; color: var(--text-main); }
+        .dice-container { display: flex; gap: 8px; }
+        .hit-die { width: 50px; height: 50px; font-size: 2rem; border: none; background: none; cursor: pointer; color: var(--accent-gold); transition: transform 0.2s; }
+        .hit-die:active { transform: scale(0.9); }
+        .hit-die.used { opacity: 0.25; text-decoration: line-through; color: var(--text-sub); }
+        .dice-note { font-size: 0.9rem; color: var(--text-sub); font-style: italic; margin-left: auto; }
+        
+        /* Conditions & Exhaustion */
+        .conditions-section { margin-top: 20px; padding-top: 15px; border-top: 1px solid rgba(139, 69, 19, 0.2); }
+        .exhaustion-row { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
+        .exhaustion-level { font-family: 'Special Elite', monospace; font-size: 1.2rem; color: #8b0000; margin: 0 10px; }
+        .conditions-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(85px, 1fr)); gap: 8px; }
+        .condition-btn { background: rgba(0,0,0,0.05); border: 1px solid var(--text-sub); border-radius: 4px; padding: 6px 4px; font-family: 'EB Garamond', serif; font-size: 0.85rem; color: var(--text-sub); cursor: pointer; text-align: center; transition: all 0.2s; opacity: 0.7; }
+        .condition-btn:hover { opacity: 1; border-color: var(--accent-gold); }
+        .condition-btn.active { background: #8b0000; color: #fff; border-color: #5c0000; opacity: 1; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        body.dark-mode .condition-btn { background: rgba(255,255,255,0.05); border-color: #555; color: #aaa; }
+        body.dark-mode .condition-btn.active { background: #cf6679; color: #000; }
+        body.dark-mode .combat-stats { background: rgba(139, 69, 19, 0.15); border-color: #8b5a2b; }
+        body.dark-mode .stat-btn { background: rgba(139, 69, 19, 0.2); }
+        body.dark-mode .stat-value { background: rgba(197, 160, 89, 0.12); }
 
         /* Responsive */
         @media (min-width: 1200px) {
@@ -925,7 +579,7 @@
         @media (max-width: 768px) {
             body { 
                 flex-direction: column; 
-                overflow: hidden; /* Keep locked */
+                overflow: hidden; 
             }
             
             .sidebar { 
@@ -1053,7 +707,6 @@
             <!-- HERO PAGE -->
             <section id="sec-hero" class="section-container active" style="text-align: center; padding-top: 20px;">
                 <div class="hero-image-container" style="max-width: 800px; margin: 0 auto;">
-                    <!-- REMOVED INLINE FILTER: Now handled by CSS class for dark mode support -->
                     <svg viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg" style="width: 100%; max-width: 600px;">
                         <rect width="600" height="400" fill="#f4e8d0"/>
                         <rect x="20" y="20" width="560" height="360" fill="none" stroke="#8b5a2b" stroke-width="3"/>
@@ -1430,35 +1083,72 @@
                     <header class="page-header"><h1 class="page-title">Uppdragslogg</h1><div class="page-subtitle">Plikter, Kontrakt och Eder</div></header>
                     <div class="timeline-container">
                         
-                        <!-- NEW SECTION: Före Avresan -->
-                        <details><summary><h3><i class="fas fa-history"></i> Före Avresan - Zügwern</h3></summary>
+                        <!-- MERGED: Zügwern History & Pre-Departure -->
+                        <details><summary><h3><i class="fas fa-history"></i> Zügwern: Tiden Före</h3></summary>
                             <div style="padding: 10px 10px 10px 25px; border-left: 1px solid var(--text-sub);">
-                                <h4 style="font-family: 'Cinzel'; margin: 10px 0 5px 0;">Flyern på Värdshuset</h4>
+                                
+                                <ul class="timeline-events" style="margin-bottom: 20px;">
+                                    <li><span class="timeline-date">År 0</span><span class="timeline-desc">Född i Eisenwald-familjen.</span></li>
+                                    <li><span class="timeline-date">År 20-23</span><span class="timeline-desc"><i class="fas fa-trophy"></i> 3x Weinberg-Fehde Champion.</span></li>
+                                    <li><span class="timeline-date">År 24</span><span class="timeline-desc"><i class="fas fa-times-circle"></i> Förlust mot Kaspar Falkenschlag.</span></li>
+                                </ul>
+
+                                <h4 style="font-family: 'Cinzel'; margin: 10px 0 5px 0; border-top: 1px dashed rgba(0,0,0,0.2); padding-top: 10px;">Arvet & Avresan</h4>
+                                
+                                <!-- Medallion Image (Moved from Vinrankan section) -->
+                                <div class="info-card" style="background: rgba(139,90,43,0.05); border: 2px solid var(--accent-gold); margin-bottom: 15px;">
+                                    <h3 style="text-align: center; font-size: 1.1rem;"><i class="fas fa-book-open"></i> Farfars Medaljong</h3>
+                                    <div class="sketch-container">
+                                        <div class="wax-seal"></div>
+                                        <!-- REMOVED INLINE MIX-BLEND-MODE & FILTER -->
+                                        <img data-src="https://raw.githubusercontent.com/GusHem/NordSym-Logga/refs/heads/main/Eisenwald%20medaljong.svg"
+                                             alt="Eisenwald Medallion"
+                                             style="width: 100%; max-width: 400px; height: auto; margin: 0 auto; display: block;">
+                                    </div>
+                                    <p style="font-family: 'Caveat', cursive; font-size: 1.1rem; color: var(--ink-color);
+                                              margin-top: 10px; text-align: center;">
+                                        "Fick den av farfar innan jag åkte. Motivet på framsidan – vinrankan och svärdet – ser man överallt hemma. Det är inget märkvärdigt. Men baksidan... 'Järnskog böjer sig ej'. Han menade nog våra gamla rankor hemma i dalen. De blir hårda som järn med åren. De står pall för stormar som knäcker vanliga träd. Det är så vi odlar dem."
+                                    </p>
+                                </div>
+
+                                <!-- Lost Weapon (Memory) - Moved from Vinrankan section -->
+                                <div class="info-card" style="background: rgba(139,69,19,0.08); border-left: 4px solid #8b4513; margin-bottom: 15px;">
+                                    <h3 style="font-size: 1.1rem;">Minne: Det Första Svärdet</h3>
+                                    <p style="font-style: italic; text-align: center; margin-bottom: 10px; font-size: 0.9rem;">Turneringspris vunnet tillsammans med första ringen 1520.</p>
+                                    <div class="sketch-container">
+                                        <div class="wax-seal"></div>
+                                        <img data-src="https://raw.githubusercontent.com/GusHem/NordSym-Logga/refs/heads/main/tunresva%CC%88rd.svg"
+                                             alt="Tournament Prize Sword"
+                                             style="width: 100%; height: auto;">
+                                    </div>
+                                    <span class="handwritten-caption" style="color: #8b4513;">
+                                        Ett ceremonisvärd, inte smitt för krig. Rosten tog det på båten hit innan jag ens satt foten på marken. Det lilla som var kvar såldes för 15 silver. Detta är bara minnet av svärdet, inte själva svärdet.
+                                    </span>
+                                </div>
+
+                                <h4 style="font-family: 'Cinzel'; margin: 15px 0 5px 0;">Flyern på Värdshuset</h4>
                                 <p style="font-family: 'EB Garamond'; font-size: 1rem; margin-bottom: 10px;">
-                                    Veckor efter förlusten mot Kaspar. En sliten flyer på värdshuset i Wesshopp:
+                                    Veckor efter förlusten. En sliten flyer på det lokala värdshuset hemma i dalen:
                                 </p>
                                 
-                                <!-- REPLACED TEXT BOX WITH FLYER IMAGE -->
-                                <div class="sketch-container" style="padding: 10px; margin: 15px 0; transform: rotate(1deg);">
+                                <!-- Flyer Image - RESIZED -->
+                                <div class="sketch-container" style="padding: 10px; margin: 15px auto; transform: rotate(1deg); max-width: 60%;">
                                     <div class="wax-seal"></div>
-                                    <!-- REMOVED INLINE MIX-BLEND-MODE & FILTER -->
                                     <img data-src="https://raw.githubusercontent.com/GusHem/NordSym-Logga/refs/heads/main/flyer.svg" 
                                          alt="Lisse Arena Championship Flyer" 
                                          style="width: 100%; height: auto; box-shadow: 2px 2px 5px rgba(0,0,0,0.2);">
                                     
-                                    <!-- INVISIBLE INK LAYER: VISIBLE ONLY IN DARKVISION -->
+                                    <!-- INVISIBLE INK LAYER -->
                                     <div class="invisible-ink-container">
                                         <div class="invisible-text">LÖGNER</div>
                                     </div>
                                 </div>
 
                                 <p style="font-family: 'EB Garamond'; font-style: italic;">
-                                    Sålde allt utom rustningen och svärdet. Betalade mina sista 15 silvermynt till en "agent" på värdshuset för anmälan och båtbiljett. Han lovade guld och ära. Jag trodde honom.
+                                    Betalade 15 silvermynt till en kontakt på värdshuset för anmälan och båtbiljett. Han lovade guld och ära. Jag trodde honom.
                                 </p>
                             </div>
                         </details>
-
-                        <details><summary><h3><i class="fas fa-shield-alt"></i> Zügwern-Åren (Förflutet)</h3></summary><ul class="timeline-events"><li><span class="timeline-date">År 0</span><span class="timeline-desc">Född i Eisenwald-familjen.</span></li><li><span class="timeline-date">År 20-23</span><span class="timeline-desc"><i class="fas fa-trophy"></i> 3x Weinberg-Fehde Champion.</span></li><li><span class="timeline-date">År 24</span><span class="timeline-desc"><i class="fas fa-times-circle"></i> Förlust mot Kaspar Falkenschlag.</span></li></ul></details>
                         
                         <!-- MOVED: Vinrankan Expandable Section -->
                         <details style="border-left: 4px solid var(--accent-gold);">
@@ -1496,38 +1186,6 @@
                                     </div>
                                 </div>
 
-                                <!-- MOVED HERE: Lost Weapon (Memory) -->
-                                <div class="info-card" style="background: rgba(139,69,19,0.08); border-left: 4px solid #8b4513;">
-                                    <h3>Minne: Det Första Svärdet</h3>
-                                    <p style="font-style: italic; text-align: center; margin-bottom: 15px;">Turneringspris vunnet tillsammans med första ringen 1520.</p>
-                                    <div class="sketch-container">
-                                        <div class="wax-seal"></div>
-                                        <!-- REMOVED INLINE MIX-BLEND-MODE & FILTER -->
-                                        <img data-src="https://raw.githubusercontent.com/GusHem/NordSym-Logga/refs/heads/main/tunresva%CC%88rd.svg"
-                                             alt="Tournament Prize Sword"
-                                             style="width: 100%; height: auto;">
-                                    </div>
-                                    <span class="handwritten-caption" style="color: #8b4513;">
-                                        Detta är minnet av svärdet. Inte själva svärdet. Det är sålt. Det var gammalt och slitet ändå. Värdet låg i minnet av första segern, inte i stålet.
-                                    </span>
-                                </div>
-                                
-                                <!-- Medallion Image -->
-                                <div class="info-card" style="background: rgba(139,90,43,0.05); border: 2px solid var(--accent-gold);">
-                                    <h3 style="text-align: center;"><i class="fas fa-book-open"></i> Eisenwald Arvegods</h3>
-                                    <div class="sketch-container">
-                                        <div class="wax-seal"></div>
-                                        <!-- REMOVED INLINE MIX-BLEND-MODE & FILTER -->
-                                        <img data-src="https://raw.githubusercontent.com/GusHem/NordSym-Logga/refs/heads/main/Eisenwald%20medaljong.svg"
-                                             alt="Eisenwald Medallion"
-                                             style="width: 100%; max-width: 400px; height: auto; margin: 0 auto; display: block;">
-                                    </div>
-                                    <p style="font-family: 'Caveat', cursive; font-size: 1.2rem; color: var(--ink-color);
-                                              margin-top: 15px; text-align: center; font-weight: 700;">
-                                        "Sista kopplingen till familjen. Detta halsband tog jag med hemifrån. Silvret i det håller bättre än länkarna på svärdet, men hur länge?"
-                                    </p>
-                                </div>
-
                                 <!-- Chain Close-up (Degradation Study) -->
                                 <div class="info-card">
                                     <h3 style="text-align: center; color: #8b0000;">
@@ -1560,12 +1218,12 @@
 
                                 <!-- Cultural Context -->
                                 <div class="info-card" style="background: rgba(139,69,19,0.08); border-left: 4px solid #8b4513;">
-                                    <h3 style="text-align: center;"><i class="fas fa-book"></i> Om Zügwerns Symboler</h3>
+                                    <h3 style="text-align: center;"><i class="fas fa-book"></i> Om Symboliken</h3>
                                     <p style="font-family: 'EB Garamond', serif; font-size: 1rem; line-height: 1.7;">
-                                        <strong>Vinrankan och Svärdet</strong> representerar Zügwerns två stoltheter. Symbolen förenar odlarens <strong>tålamod</strong> <em>(rankan)</em> med krigarens <strong>beslutsamhet</strong> <em>(svärdet)</em>. Det är en påminnelse om att riket vilar på både jordbruk och stål.
+                                        På familjens medaljong syns en ranka som skyddar svärdet. Det är därför ringarna från <em>Weinberg-Fehde</em> är formade som de är. När man trär segerringarna på sitt fäste återskapar man familjens gamla vapensköld i fysisk form.
                                     </p>
                                     <p style="font-family: 'Caveat', cursive; font-size: 1.2rem; color: var(--ink-color); margin-top: 10px;">
-                                        "Gudarna dog för 100 år sedan. Men traditionerna lever. Min ed behöver ingen gud – bara min vilja och mitt stål."
+                                        "Medaljongen är vad jag föddes till. Ringarna på svärdet är vad jag förtjänade. Nu rostar båda."
                                     </p>
                                 </div>
                                 
