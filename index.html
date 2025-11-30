@@ -1085,6 +1085,16 @@
                                 <button class="condition-btn" onclick="toggleCondition(this, 'Stunned')">Stunned</button>
                                 <button class="condition-btn" onclick="toggleCondition(this, 'Unconscious')">Unconscious</button>
                             </div>
+
+                            <!-- LONG REST BUTTON (NEW) -->
+                            <button class="long-rest-btn" onclick="openRestModal()" 
+                                    style="background: #2c4a6b; color: #f0e68c; border: 2px solid #1a3c5e; 
+                                           font-family: 'Cinzel', serif; font-weight: bold; padding: 15px 30px; 
+                                           cursor: pointer; margin-top: 25px; width: 100%; 
+                                           transition: all 0.2s; min-height: 44px; touch-action: manipulation;
+                                           display: flex; align-items: center; justify-content: center; gap: 10px;">
+                                <i class="fas fa-moon"></i> Lång Vila (8h)
+                            </button>
                         </div>
 
                     </div>
@@ -2088,6 +2098,23 @@
                             </button>
                         </div>
 
+                        <!-- DATA MANAGEMENT (NEW) -->
+                        <div class="info-card" style="border: 1px dashed var(--text-sub); background: rgba(0,0,0,0.02);">
+                            <h3 style="font-size: 1rem; border: none; text-align: left; margin-bottom: 10px;">
+                                <i class="fas fa-archive"></i> Arkivering (Backup)
+                            </h3>
+                            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                <button onclick="exportCharacter()" style="flex: 1; padding: 10px; background: var(--parchment-bg); border: 1px solid var(--text-sub); cursor: pointer; font-family: 'Cinzel'; color: var(--text-main); min-height: 44px;">
+                                    <i class="fas fa-download"></i> Exportera
+                                </button>
+                                <button onclick="document.getElementById('import-file').click()" style="flex: 1; padding: 10px; background: var(--parchment-bg); border: 1px solid var(--text-sub); cursor: pointer; font-family: 'Cinzel'; color: var(--text-main); min-height: 44px;">
+                                    <i class="fas fa-upload"></i> Importera
+                                </button>
+                                <input type="file" id="import-file" style="display: none;" onchange="importCharacter(this)" accept=".json">
+                            </div>
+                            <p style="font-size: 0.8rem; margin-top: 5px; opacity: 0.7; font-family: 'EB Garamond';">Spara din data om du byter enhet.</p>
+                        </div>
+
                         <!-- Saved Notes Container -->
                         <div id="saved-notes-container" style="margin-top: 40px;">
                             <!-- Notes will be injected here via JS -->
@@ -2208,6 +2235,20 @@
             </p>
             <button class="modal-btn btn-cancel" onclick="closeDeleteModal()">Behåll</button>
             <button class="modal-btn btn-confirm" onclick="confirmDeleteNote()">Radera</button>
+        </div>
+    </div>
+
+    <!-- NEW: REST CONFIRMATION MODAL -->
+    <div id="rest-modal" class="modal-overlay">
+        <div class="modal-box" style="border-color: #2c4a6b;">
+            <div class="modal-title" style="color: #2c4a6b; border-bottom-color: #2c4a6b;"><i class="fas fa-moon"></i> Lång Vila</div>
+            <p style="font-family: 'EB Garamond'; font-size: 1.1rem; margin-bottom: 20px; line-height: 1.4;">
+                8 timmar sömn. Återställer HP, 1 Slagstärning, Lay on Hands och rensar utmattning.
+                <br><br>
+                <em style="font-size: 0.9em; opacity: 0.8;">"Rustningen må rosta, men kroppen läker."</em>
+            </p>
+            <button class="modal-btn btn-cancel" onclick="closeRestModal()">Avbryt</button>
+            <button class="modal-btn" onclick="confirmLongRest()" style="background: #2c4a6b; color: #fff;">Vila</button>
         </div>
     </div>
 
@@ -2384,6 +2425,113 @@
             });
             
             container.innerHTML = html;
+        }
+
+        // --- LONG REST SYSTEM (NEW) ---
+        function openRestModal() {
+            document.getElementById('rest-modal').style.display = 'flex';
+        }
+
+        function closeRestModal() {
+            document.getElementById('rest-modal').style.display = 'none';
+        }
+
+        function confirmLongRest() {
+            const stats = getCombatStats();
+            
+            // 1. HP: Full restore
+            stats.current_hp = stats.max_hp; // 18
+            stats.temp_hp = 0;
+            
+            // 2. Hit Dice: Regain half max (min 1). Level 2 = 2 dice. Half = 1.
+            // hit_dice_used counts UP when used. So we decrease usage.
+            const diceToRegain = Math.max(1, Math.floor(2 / 2)); 
+            stats.hit_dice_used = Math.max(0, stats.hit_dice_used - diceToRegain);
+            
+            // 3. Lay on Hands: Full restore
+            stats.lay_on_hands = 10;
+            
+            // 4. Exhaustion: Reduce by 1 level
+            stats.exhaustion = Math.max(0, stats.exhaustion - 1);
+            
+            // 5. Conditions: Clear all
+            stats.active_conditions = [];
+            
+            saveCombatStats(stats);
+            
+            // 6. Spell Slots: Reset visually (DOM only, since slots aren't persisted in storage logic yet)
+            document.querySelectorAll('.spell-slot').forEach(slot => {
+                slot.classList.remove('used');
+                slot.classList.add('available');
+                slot.textContent = '○';
+            });
+            
+            updateCombatDisplay();
+            closeRestModal();
+            
+            // Thematic confirmation
+            setTimeout(() => {
+                alert("8 timmars vila. Rustningen sitter fortfarande lika illa, men kroppen... den fungerar igen.");
+            }, 300);
+        }
+
+        // --- DATA MANAGEMENT (EXPORT/IMPORT) ---
+        function exportCharacter() {
+            const data = {
+                combat: getCombatStats(),
+                spells: getPreparedSpells(),
+                notes: getNotes(),
+                meta: {
+                    character: "Kurt Eisenwald",
+                    level: 2,
+                    exportDate: new Date().toISOString()
+                }
+            };
+            
+            const json = JSON.stringify(data, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `kurt-eisenwald-backup-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function importCharacter(input) {
+            const file = input.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    
+                    // Validate basic structure
+                    if (data.combat && data.notes) {
+                        if (confirm("Detta kommer att skriva över din nuvarande status. Är du säker?")) {
+                            localStorage.setItem('kurt_combat_stats', JSON.stringify(data.combat));
+                            localStorage.setItem('kurt_notes_list', JSON.stringify(data.notes));
+                            if (data.spells) {
+                                localStorage.setItem('kurt_prepared_spells', JSON.stringify(data.spells));
+                            }
+                            
+                            alert("Minnet återställt. Välkommen tillbaka.");
+                            location.reload(); // Reload to apply changes
+                        }
+                    } else {
+                        alert("Felaktig fil. Detta är inte en giltig kodex.");
+                    }
+                } catch (error) {
+                    alert("Kunde inte läsa filen. Den är korrupt.");
+                    console.error(error);
+                }
+            };
+            reader.readAsText(file);
+            input.value = ''; // Reset input
         }
 
         // --- SPELL PREP SYSTEM JS ---
